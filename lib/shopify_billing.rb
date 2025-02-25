@@ -1,6 +1,13 @@
-require "shopify_billing/version"
-require "shopify_billing/engine"
+# frozen_string_literal: true
+
+require 'shopify_billing/engine'
+require 'shopify_billing/version'
 
 module ShopifyBilling
-  # Your code goes here...
+  mattr_accessor :event_reporter
+  mattr_accessor :shop_class
+
+  def self.setup
+    yield self
+  end
 end

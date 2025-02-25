@@ -4,10 +4,10 @@ Gem::Specification.new do |spec|
   spec.name        = "shopify_billing"
   spec.version     = ShopifyBilling::VERSION
   spec.authors     = ["Matthew Cwalina"]
-  spec.email       = ["matthewcwalina@gmail.com"]
+  spec.email       = ["matthew@eshop-guide.de"]
   spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of ShopifyBilling."
-  spec.description = "TODO: Description of ShopifyBilling."
+  spec.summary     = "An Engine for handling Shopify Billing"
+  spec.description = "Handles billing logic across Shopify Apps"
   spec.license     = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"

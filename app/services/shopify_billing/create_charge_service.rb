@@ -10,6 +10,7 @@ module ShopifyBilling
     end
 
     def call
+      puts "WAS THIS SHIT CALLED?"
       return if @shop.nil? || @billing_plan.nil? || @host.nil?
 
       if @billing_plan.recurring?

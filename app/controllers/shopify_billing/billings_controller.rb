@@ -11,6 +11,7 @@ module ShopifyBilling
 
       render json: plans
     end
+    
     def create_charge
       charge = ShopifyBilling::CreateChargeService.call(
         shop: params[:shop],

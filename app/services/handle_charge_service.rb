@@ -2,7 +2,7 @@
 
 module ShopifyBilling
   module Services
-    class HandleChargeService < ApplicationService
+    class HandleChargeService < BaseReportingService
       def initialize(shop_id:, charge_id:, billing_plan_id:, coupon_code:, token:)
         @shop = Shop.find(shop_id)
         @charge_id = charge_id

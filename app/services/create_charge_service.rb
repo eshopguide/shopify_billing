@@ -2,7 +2,7 @@
 
 module ShopifyBilling
   module Services
-    class CreateChargeService < ApplicationService
+    class CreateChargeService < BaseReportingService
       def initialize(shop:, billing_plan_id:, host:, coupon_code: nil)
         @shop = shop
         @billing_plan = BillingPlan.find(billing_plan_id)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ShopifyBilling
   class BillingPlan < ApplicationRecord
     has_many :charges

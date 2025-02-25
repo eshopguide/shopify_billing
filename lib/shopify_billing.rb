@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'shopify_billing/engine'
-require 'shopify_billing/version'
 
 module ShopifyBilling
   mattr_accessor :event_reporter
@@ -9,5 +8,9 @@ module ShopifyBilling
 
   def self.setup
     yield self
+  end
+
+  def self.report_event?
+    event_reporter.present?
   end
 end

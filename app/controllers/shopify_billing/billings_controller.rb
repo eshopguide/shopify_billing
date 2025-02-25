@@ -4,7 +4,7 @@ module ShopifyBilling
   class BillingsController < ::AuthenticatedController
 
     def show
-      plans = SelectAvailableBillingPlansService.call(
+      plans = ShopifyBilling::SelectAvailableBillingPlansService.call(
         shop: @current_shop,
         coupon_code: params[:coupon_code]
       )
@@ -12,7 +12,7 @@ module ShopifyBilling
       render json: plans
     end
     def create_charge
-      charge = CreateChargeService.call(
+      charge = ShopifyBilling::CreateChargeService.call(
         shop: params[:shop],
         billing_plan_id: params[:billing_plan_id],
         host: params[:host],

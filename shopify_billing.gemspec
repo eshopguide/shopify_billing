@@ -24,4 +24,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", "~> 7.0"
+  spec.add_dependency "shopify_api", "~> 14.4"
+  spec.add_dependency "shopify_app", ">= 22.3"
 end

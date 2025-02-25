@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version     = ShopifyBilling::VERSION
   spec.authors     = ["Matthew Cwalina"]
   spec.email       = ["matthew@eshop-guide.de"]
-  spec.homepage    = "TODO"
+  spec.homepage    = "https://github.com/eshopguide/shopify_billing"
   spec.summary     = "An Engine for handling Shopify Billing"
   spec.description = "Handles billing logic across Shopify Apps"
   spec.license     = "MIT"

@@ -17,12 +17,12 @@ module ShopifyBilling
       ShopifyBilling.event_reporter = app.config.event_reporter
     end
 
-    # Add factory paths for the main app to use
-    initializer 'shopify_billing.factories', after: 'factory_bot.set_factory_paths' do
-      if defined?(FactoryBot)
-        FactoryBot.definition_file_paths << File.expand_path('../../spec/factories', __dir__)
-        FactoryBot.reload
-      end
-    end
+       # Disable factory loading temporarily
+    # initializer 'shopify_billing.factories', after: 'factory_bot.set_factory_paths' do
+    #   if defined?(FactoryBot)
+    #     FactoryBot.definition_file_paths << File.expand_path('../../spec/factories', __dir__)
+    #     FactoryBot.reload
+    #   end
+    # end
   end
 end

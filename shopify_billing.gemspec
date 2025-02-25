@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary     = "An Engine for handling Shopify Billing"
   spec.description = "Handles billing logic across Shopify Apps"
   spec.license     = "MIT"
+  spec.required_ruby_version = ">= 2.6.0"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -22,5 +23,5 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails", ">= 7.0.8.4"
+  spec.add_dependency "rails", "~> 7.0"
 end

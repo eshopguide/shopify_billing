@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-class AuthenticatedController < ApplicationController
+class ShopifyBilling::AuthenticatedController < ShopifyBilling::ApplicationController
     include ShopifyApp::EnsureHasSession
-
-  end
+end

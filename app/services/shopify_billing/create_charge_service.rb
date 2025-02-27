@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class CreateChargeService < BaseReportingService
+  class CreateChargeService < ShopifyBilling::BaseReportingService
     def initialize(shop:, billing_plan_id:, host:, coupon_code: nil)
       @shop = shop
       @billing_plan = BillingPlan.find(billing_plan_id)
@@ -10,7 +10,6 @@ module ShopifyBilling
     end
 
     def call
-      puts "WAS THIS SHIT CALLED?"
       return if @shop.nil? || @billing_plan.nil? || @host.nil?
 
       if @billing_plan.recurring?
@@ -81,9 +80,10 @@ module ShopifyBilling
       }
       params[:coupon_code] = @coupon_code if @coupon_code.present? && @billing_plan.recurring?
 
-      URI::HTTPS.build(
-        host: ENV.fetch('HOST_NAME'),
-        path: '/handle_charge',
+
+      url = URI::HTTPS.build(
+        host: 'matt-lexoffice-shopify.eu.ngrok.io',
+        path: '/shopify_billing/handle_charge',
         query: params.to_query
       ).to_s
     end

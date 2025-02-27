@@ -5,5 +5,6 @@ module ShopifyBilling
 
   # base class for Coupons
   class CouponCode < ApplicationRecord
+    self.table_name = 'coupon_codes'
   end
 end

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class BaseReportingService < ApplicationService
-    include EventReporter
-
+  class BaseReportingService < ShopifyBilling::ApplicationService
     protected
 
     def verification_token

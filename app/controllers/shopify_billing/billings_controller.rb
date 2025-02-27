@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class BillingsController < ::AuthenticatedController
-
+  class BillingsController < ShopifyBilling::AuthenticatedController
+    before_action :set_current_shop
     def show
       plans = ShopifyBilling::SelectAvailableBillingPlansService.call(
         shop: @current_shop,
@@ -11,19 +11,19 @@ module ShopifyBilling
 
       render json: plans
     end
-    
+
     def create_charge
       charge = ShopifyBilling::CreateChargeService.call(
-        shop: params[:shop],
-        billing_plan_id: params[:billing_plan_id],
-        host: params[:host],
-        coupon_code: params[:coupon_code]
+        shop: @current_shop,
+        billing_plan_id: params.require(:plan_id),
+        coupon_code: params[:coupon_code],
+        host: shopify_host
       )
 
-      if charge
-        render json: { charge_url: charge.confirmation_url }
+      if charge&.confirmation_url
+        render json: { success: true, confirmation_url: charge.confirmation_url }
       else
-        render json: { error: 'Failed to create charge' }, status: :unprocessable_entity
+        render json: { success: false }
       end
     end
   end

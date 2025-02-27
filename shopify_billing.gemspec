@@ -26,4 +26,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", "~> 7.0"
   spec.add_dependency "shopify_api", "~> 14.4"
   spec.add_dependency "shopify_app", ">= 22.3"
+  spec.add_dependency "honeybadger", ">= 4.0"
+
+  spec.add_development_dependency "pg"
+  spec.add_development_dependency "combustion", "~> 1.3"
+  spec.add_development_dependency "rspec-rails"
+  spec.add_development_dependency "factory_bot_rails"
+  spec.add_development_dependency "database_cleaner-active_record"
 end

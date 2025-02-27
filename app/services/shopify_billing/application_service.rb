@@ -3,7 +3,7 @@
 module ShopifyBilling
   class ApplicationService
     def self.call(...)
-      new.call
+      new(...).call
     end
 
     protected

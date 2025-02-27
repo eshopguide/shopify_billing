@@ -2,6 +2,7 @@
 
 module ShopifyBilling
   class BillingPlan < ApplicationRecord
+    self.table_name = 'billing_plans'
     has_many :charges
 
     scope :free, -> { find_by(short_name: 'FreePlan') }

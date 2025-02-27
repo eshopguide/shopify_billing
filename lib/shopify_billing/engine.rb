@@ -10,19 +10,19 @@ module ShopifyBilling
       g.factory_bot dir: 'spec/factories'
     end
 
-    # Configure event reporting
-    config.event_reporter = nil
-
     initializer 'shopify_billing.event_reporter' do |app|
-      ShopifyBilling.event_reporter = app.config.event_reporter
+      if app.config.respond_to?(:event_reporter) && app.config.event_reporter.present?
+        ShopifyBilling.event_reporter = app.config.event_reporter
+      end
     end
 
-       # Disable factory loading temporarily
-    # initializer 'shopify_billing.factories', after: 'factory_bot.set_factory_paths' do
-    #   if defined?(FactoryBot)
-    #     FactoryBot.definition_file_paths << File.expand_path('../../spec/factories', __dir__)
-    #     FactoryBot.reload
-    #   end
-    # end
+    initializer 'shopify_billing.honeybadger' do |app|
+      if defined?(Honeybadger) && app.config.respond_to?(:honeybadger)
+        Honeybadger.configure do |config|
+          config.api_key = app.config.honeybadger.api_key if app.config.honeybadger.respond_to?(:api_key)
+          config.env = app.config.honeybadger.env if app.config.honeybadger.respond_to?(:env)
+        end
+      end
+    end
   end
 end

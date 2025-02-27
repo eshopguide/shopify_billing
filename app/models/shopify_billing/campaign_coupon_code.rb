@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class CampaignCouponCode < CouponCode
+  class CampaignCouponCode < ShopifyBilling::CouponCode
     self.table_name = 'campaign_coupon_codes'
     has_many :shops
     validates :coupon_code, presence: true, format: { with: /\A[0-9a-zA-Z'-]*\z/ }, uniqueness: true

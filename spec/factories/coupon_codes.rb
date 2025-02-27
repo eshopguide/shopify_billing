@@ -1,24 +1,19 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :coupon_code, class: 'ShopifyBilling::OneTimeCouponCode' do
-    coupon_code { SecureRandom.uuid.delete('-').upcase.slice(0, 6) }
+  factory :coupon_code, class: 'ShopifyBilling::CouponCode' do
+    sequence(:coupon_code) { |n| "CODE#{n}" }
+    redeem_counter { 1 }
+    validity { 1.month.from_now.to_date }
+    free_days { 30 }
     redeemed { false }
-    shop_id { nil }
-    free_days { rand(1..60) }
-    validity { Date.today + rand(1..60).days }
-    redeem_counter { rand(1..10) }
 
-    trait :redeemed do
-      redeemed { true }
+    factory :one_time_coupon_code, class: 'ShopifyBilling::OneTimeCouponCode' do
+      # Add any specific attributes for one-time coupon codes
     end
-  end
 
-  factory :campaign_coupon_code, class: 'ShopifyBilling::CampaignCouponCode' do
-    coupon_code { SecureRandom.uuid.delete('-').upcase.slice(0, 6) }
-    redeemed { false }
-    free_days { rand(1..60) }
-    validity { Date.today + rand(1..60).days }
-    redeem_counter { rand(1..10) }
+    factory :campaign_coupon_code, class: 'ShopifyBilling::CampaignCouponCode' do
+      # Add any specific attributes for campaign coupon codes
+    end
   end
 end

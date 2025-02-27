@@ -49,7 +49,7 @@ module ShopifyBilling
     def process_coupon
       return unless @coupon_code
 
-      coupon = CouponCode.find_by(coupon_code: @coupon_code)
+      coupon = ShopifyBilling::CouponCode.find_by(coupon_code: @coupon_code)
       coupon.redeem(@shop)
     end
 

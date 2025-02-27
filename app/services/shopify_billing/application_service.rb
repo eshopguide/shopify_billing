@@ -2,8 +2,8 @@
 
 module ShopifyBilling
   class ApplicationService
-    def self.call(...)
-      new(...).call
+    def self.call(**args)
+      new(**args).call
     end
 
     protected

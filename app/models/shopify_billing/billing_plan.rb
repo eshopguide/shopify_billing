@@ -3,7 +3,7 @@
 module ShopifyBilling
   class BillingPlan < ApplicationRecord
     self.table_name = 'billing_plans'
-    has_many :charges
+    has_many :shops
 
     scope :free, -> { find_by(short_name: 'FreePlan') }
 
@@ -33,7 +33,7 @@ module ShopifyBilling
     def base_trial_days
       return 0 if plan_type == 'one_time' || development_plan?
 
-      ENV.fetch('TRIAL_DAYS', '14').to_i
+      ENV.fetch('TRIAL_DAYS').to_i
     end
 
     def current_for_shop?(shop)
@@ -48,22 +48,6 @@ module ShopifyBilling
       discount = discount_for_shop(shop)
       discounted_price = (price * ((100 - discount) / 100.0))
       [discounted_price, 1].max
-    end
-    
-    def recommended?
-      recommended || false
-    end
-    
-    def development_plan?
-      development_plan || false
-    end
-    
-    def available_for_development_shop?
-      available_for_development_shop || false
-    end
-    
-    def available_for_production_shop?
-      available_for_production_shop || false
     end
   end
 end

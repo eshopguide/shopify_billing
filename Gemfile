@@ -6,6 +6,10 @@ gemspec
 
 gem "puma"
 
+group :development, :test do
+  gem 'pg', '~> 1.5.8'
+end
+
 gem "sqlite3"
 
 gem "sprockets-rails"

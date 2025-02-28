@@ -214,6 +214,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
         it 'creates a test charge' do
           charge_attributes = service.send(:charge_attributes)
+          warn charge_attributes
 
           expect(charge_attributes[:test]).to eq(true)
         end

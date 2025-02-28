@@ -1,3 +1,7 @@
 test:
-  adapter:  sqlite3
-  database: db/combustion_test.sqlite
+  adapter: postgresql
+  database: lexoffice_development
+  username: mcwalina
+  password: Martin93
+  host: localhost
+  port: 5432

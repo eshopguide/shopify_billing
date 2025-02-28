@@ -4,11 +4,27 @@
 
 ENGINE_ROOT = File.expand_path("..", __dir__)
 ENGINE_PATH = File.expand_path("../lib/shopify_billing/engine", __dir__)
-APP_PATH = File.expand_path("../test/dummy/config/application", __dir__)
 
 # Set up gems listed in the Gemfile.
 ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../Gemfile", __dir__)
 require "bundler/setup" if File.exist?(ENV["BUNDLE_GEMFILE"])
 
 require "rails/all"
-require "rails/engine/commands"
+
+# Check if we're running the console command
+if ARGV.first == "console" || ARGV.first == "c"
+  # Set required environment variables
+  ENV['APP_NAME'] ||= 'ShopifyBilling'
+  ENV['TRIAL_DAYS'] ||= '14'
+
+  require "combustion"
+  Combustion.initialize! :active_record, :action_controller, :action_view
+
+  # Clear ARGV to prevent IRB from trying to open a file
+  ARGV.clear
+
+  require "irb"
+  IRB.start
+else
+  require "rails/engine/commands"
+end

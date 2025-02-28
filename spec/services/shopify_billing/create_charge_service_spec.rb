@@ -116,8 +116,8 @@ RSpec.describe ShopifyBilling::CreateChargeService do
             .to receive(:new).with(from_hash: kind_of(Hash)).and_return(recurring_charge)
           expect(recurring_charge).to receive(:save!)
 
-          expect { service.call }.to change(Charge, :count).by(1)
-          expect(Charge.last.shopify_id).to eq("gid://shopify/AppSubscription/#{recurring_charge.id}")
+          expect { service.call }.to change(ShopifyBilling::Charge, :count).by(1)
+          expect(ShopifyBilling::Charge.last.shopify_id).to eq("gid://shopify/AppSubscription/#{recurring_charge.id}")
         end
       end
 

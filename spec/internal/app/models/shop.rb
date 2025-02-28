@@ -19,7 +19,7 @@ class Shop < ActiveRecord::Base
   end
 
   def import_unlocked
-    false
+    import_manually_unlocked_at.present? || import_unlocked_at.present?
   end
 
   def reset_app_installation_cache

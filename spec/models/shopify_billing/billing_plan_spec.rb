@@ -98,6 +98,11 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
       context 'when shop has active subscription' do
         let(:app_subscription) { double(id: 'gid://shopify/AppSubscription/12345', status: 'ACTIVE') }
 
+        before do
+          allow(shop).to receive(:billing_plan).and_return(billing_plan)
+          create(:charge, shopify_id: app_subscription.id, billing_plan: billing_plan)
+        end
+
         context 'when billing plan is current for shop' do
           it 'returns true' do
             expect(billing_plan.current_for_shop?(shop)).to eq(true)

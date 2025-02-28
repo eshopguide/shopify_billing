@@ -8,7 +8,7 @@ RSpec.describe ShopifyBilling::HandleChargeService do
   let(:billing_plan) { create(:billing_plan, name: 'Pro Plan', price: 19.99) }
   let(:charge_id) { '123456' }
   let(:coupon_code) { 'ABC123' }
-  let(:coupon) { create(:coupon_code, coupon_code: 'ABC123') }
+  let(:coupon) { create(:one_time_coupon_code, coupon_code: 'ABC123') }
   let(:campaign_coupon) { create(:campaign_coupon_code, coupon_code: 'CAM123') }
   let(:valid_token) { 'valid_token' }
   let(:previous_plan) { nil }

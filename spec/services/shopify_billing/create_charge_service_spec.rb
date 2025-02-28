@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ShopifyBilling::CreateChargeService do
   let!(:shop) { create(:shop) }
   let(:billing_plan) { create(:billing_plan) }
-  let(:coupon) { create(:coupon_code) }
+  let(:coupon) { create(:one_time_coupon_code, coupon_code: 'ABC123') }
   let(:host) { 'some-host' }
   let(:one_time_charge) do
     double('ShopifyAPI::ApplicationCharge', id: 123, status: 'active', test: false, current_period_end: nil)
@@ -214,7 +214,6 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
         it 'creates a test charge' do
           charge_attributes = service.send(:charge_attributes)
-          warn charge_attributes
 
           expect(charge_attributes[:test]).to eq(true)
         end

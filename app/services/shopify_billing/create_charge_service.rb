@@ -4,7 +4,7 @@ module ShopifyBilling
   class CreateChargeService < ShopifyBilling::BaseReportingService
     def initialize(shop:, billing_plan_id:, host:, coupon_code: nil)
       @shop = shop
-      @billing_plan = BillingPlan.find(billing_plan_id)
+      @billing_plan = ShopifyBilling::BillingPlan.find(billing_plan_id)
       @coupon_code = coupon_code
       @host = host
     end
@@ -14,7 +14,7 @@ module ShopifyBilling
 
       if @billing_plan.recurring?
         if @coupon_code.present?
-          coupon = CouponCode.find_by(coupon_code: @coupon_code)
+          coupon = ShopifyBilling::CouponCode.find_by(coupon_code: @coupon_code)
           coupon.assign_to_shop(@shop)
           @billing_plan.apply_coupon(coupon)
         end
@@ -60,6 +60,11 @@ module ShopifyBilling
     end
 
     def charge_attributes
+      warn "HELLO!"
+      warn ENV.fetch('TEST_CHARGE').to_s.casecmp('true').zero?
+      warn @billing_plan.development_plan?
+      warn @shop.inspect
+      warn @shop.internal_test_shop?
       {
         name: @billing_plan.name,
         price: @billing_plan.price_for_shop(@shop),

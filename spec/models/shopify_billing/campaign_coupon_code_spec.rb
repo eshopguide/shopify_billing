@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ShopifyBilling::CampaignCouponCode, type: :model do
-  let(:campaign_coupon_code) { build(:coupon_code, :campaign) }
+  let(:campaign_coupon_code) { create(:campaign_coupon_code) }
   let(:shop) { create(:shop) }
 
   describe '#assign_to_shop' do
@@ -37,13 +37,13 @@ RSpec.describe ShopifyBilling::CampaignCouponCode, type: :model do
       end
 
       it 'raises an InvalidCouponError' do
-        expect { campaign_coupon_code.redeem(shop) }.to raise_error(InvalidCouponError)
+        expect { campaign_coupon_code.redeem(shop) }.to raise_error(ShopifyBilling::InvalidCouponError)
       end
     end
   end
 
   describe '#coupon_valid?' do
-    let(:campaign_coupon_code) { create(:coupon_code, :campaign) }
+    let(:campaign_coupon_code) { create(:campaign_coupon_code) }
 
     context 'when validity is in the future and redeem_counter is positive' do
       before do

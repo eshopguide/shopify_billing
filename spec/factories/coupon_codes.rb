@@ -9,6 +9,7 @@ FactoryBot.define do
     validity { Date.today + rand(1..60).days }
     type { 'ShopifyBilling::CouponCode' }
     redeem_counter { rand(1..10) }
+
     trait :redeemed do
       redeemed { true }
     end

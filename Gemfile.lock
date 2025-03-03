@@ -11,7 +11,6 @@ PATH
   remote: .
   specs:
     shopify_billing (0.1.0)
-      central_event_logger (= 0.1.7)
       honeybadger (>= 4.0)
       rails (~> 7.0)
       shopify_api (~> 14.4)

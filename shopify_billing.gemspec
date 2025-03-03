@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "shopify_api", "~> 14.4"
   spec.add_dependency "shopify_app", ">= 22.3"
   spec.add_dependency "honeybadger", ">= 4.0"
-  spec.add_dependency 'central_event_logger', '0.1.7'
 
   spec.add_development_dependency "pg", "~> 1.5.8"
   spec.add_development_dependency "combustion", "~> 1.5.0"
@@ -36,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "database_cleaner-active_record", "~> 2.2.0"
   spec.add_development_dependency "shoulda-matchers", "~> 5.3.0"
   spec.add_development_dependency "dotenv-rails", "~> 2.8.1"
+  spec.add_development_dependency 'central_event_logger', '0.1.7'
 end

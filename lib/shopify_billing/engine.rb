@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'shopify_billing/central_event_logger_adapter'
+
 module ShopifyBilling
   class Engine < ::Rails::Engine
     isolate_namespace ShopifyBilling
@@ -10,18 +12,11 @@ module ShopifyBilling
       g.factory_bot dir: 'spec/factories'
     end
 
-    initializer 'shopify_billing.event_reporter' do |app|
-      if app.config.respond_to?(:event_reporter) && app.config.event_reporter.present?
-        ShopifyBilling.event_reporter = app.config.event_reporter
-      end
-    end
-
-    initializer 'shopify_billing.honeybadger' do |app|
-      if defined?(Honeybadger) && app.config.respond_to?(:honeybadger)
-        Honeybadger.configure do |config|
-          config.api_key = app.config.honeybadger.api_key if app.config.honeybadger.respond_to?(:api_key)
-          config.env = app.config.honeybadger.env if app.config.honeybadger.respond_to?(:env)
-        end
+    initializer "shopify_billing.check_central_event_logger" do
+      begin
+        require 'central_event_logger'
+      rescue LoadError
+        # CentralEventLogger is not available, we'll use the null reporter
       end
     end
   end

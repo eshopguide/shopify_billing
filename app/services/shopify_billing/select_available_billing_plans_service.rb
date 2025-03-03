@@ -1,6 +1,6 @@
 
 module ShopifyBilling
-  class SelectAvailableBillingPlansService < ShopifyBilling::BaseReportingService
+  class SelectAvailableBillingPlansService < ShopifyBilling::ApplicationService
     def initialize(shop:, coupon_code:)
       @shop = shop
       @coupon_code = coupon_code

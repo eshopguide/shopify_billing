@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
+# Mock for ShopifyAPP::EnsureHasSession
+module ShopifyApp
+  module EnsureHasSession
+    def current_shopify_session
+      nil
+    end
+  end
+end
+
 # Mock ShopifyAPI namespace and classes for testing
 module ShopifyAPI
+
   module Auth
     def self.embedded_app_url(host)
       "https://admin.shopify.com/apps/my-app"

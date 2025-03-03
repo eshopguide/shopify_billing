@@ -32,7 +32,7 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
         billing_plan_id: billing_plan.id,
         coupon_code: coupon_code,
         token: token
-      }
+      }, format: :json
     end
 
     it 'redirects to admin with the result status' do
@@ -43,7 +43,7 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
         charge_id: charge_id,
         billing_plan_id: billing_plan.id,
         token: token
-      }
+      }, format: :json
     end
 
     it 'requires shop_id parameter' do
@@ -102,7 +102,7 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
           billing_plan_id: billing_plan.id,
           coupon_code: coupon_code,
           token: token
-        }
+        }, format: :json
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
           charge_id: charge_id,
           billing_plan_id: billing_plan.id,
           token: token
-        }
+        }, format: :json
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
           charge_id: charge_id,
           billing_plan_id: billing_plan.id,
           token: token
-        }
+        }, format: :json
       end
     end
   end

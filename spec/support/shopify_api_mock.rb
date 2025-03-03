@@ -2,6 +2,26 @@
 
 # Mock ShopifyAPI namespace and classes for testing
 module ShopifyAPI
+  module Auth
+    def self.embedded_app_url(host)
+      "https://admin.shopify.com/apps/my-app"
+    end
+
+    class Session
+      attr_reader :shop, :access_token, :scope
+
+      def self.find_by_shop(shop_domain)
+        new(shop: shop_domain, access_token: "test_token", scope: "read_products,write_products")
+      end
+
+      def initialize(shop:, access_token:, scope:)
+        @shop = shop
+        @access_token = access_token
+        @scope = scope
+      end
+    end
+  end
+
   class RecurringApplicationCharge
     def self.find(id:)
       new
@@ -61,4 +81,4 @@ module ShopifyAPI
       true
     end
   end
-end 
+end

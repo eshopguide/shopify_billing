@@ -36,7 +36,7 @@ module ShopifyBilling
                             "gid://shopify/AppPurchaseOneTime/#{charge.id}"
                           end
 
-      Charge.create!(
+      ShopifyBilling::Charge.create!(
         shopify_id: shopify_charge_id,
         billing_plan: @billing_plan
       )
@@ -60,11 +60,6 @@ module ShopifyBilling
     end
 
     def charge_attributes
-      warn "HELLO!"
-      warn ENV.fetch('TEST_CHARGE').to_s.casecmp('true').zero?
-      warn @billing_plan.development_plan?
-      warn @shop.inspect
-      warn @shop.internal_test_shop?
       {
         name: @billing_plan.name,
         price: @billing_plan.price_for_shop(@shop),

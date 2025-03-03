@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class BillingCallbacksController < ShopifyBilling::AuthenticatedController
+  class BillingCallbacksController < ShopifyBilling::ApplicationController
 
     def handle_charge
       result = ShopifyBilling::HandleChargeService.call(

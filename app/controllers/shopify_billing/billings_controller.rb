@@ -3,6 +3,7 @@
 module ShopifyBilling
   class BillingsController < ShopifyBilling::AuthenticatedController
     before_action :set_current_shop
+
     def show
       plans = ShopifyBilling::SelectAvailableBillingPlansService.call(
         shop: @current_shop,

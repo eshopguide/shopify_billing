@@ -2,16 +2,7 @@
 
 namespace :test do
   desc 'Setup test database for Combustion'
-  task setup: [] do  # Remove the dependency on :environment
-    require 'bundler/setup'
-    require 'combustion'
-
-    # Set Rails environment to test
-    ENV['RAILS_ENV'] = 'test'
-
-    # Initialize Combustion
-    Combustion.initialize! :active_record
-
+  task setup: :environment do
     # Create the database
     ActiveRecord::Tasks::DatabaseTasks.create_current
 

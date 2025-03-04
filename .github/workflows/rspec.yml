@@ -33,24 +33,28 @@ jobs:
     services:
       postgres:
         image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: shopify_billing_test
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/shopify_billing_test
-      TRIAL_DAYS: 14
-      APP_NAME: ShopifyBilling
-      HOST_NAME: example.com
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      DB_NAME: lexoffice_test
+      DB_USER: ${{ secrets.POSTGRES_DB_USER }}
+      DB_PASSWORD: ${{ secrets.POSTGRES_DB_PASSWORD }}
+      HOST_NAME: localhost
+      APP_HOME: https://test-host/
+      APP_NAME: lexoffice-integration
+      CENTRAL_EVENT_LOGGER_API_BASE_URL: https://testurl.com
+      CENTRAL_EVENT_LOGGER_API_KEY: test_key
+      CENTRAL_EVENT_LOGGER_API_SECRET: test_secret
+      REPORTING_JOB_QUEUE: default
+      TRIAL_DAYS: 7
       TEST_CHARGE: true
 
     steps:
@@ -69,7 +73,7 @@ jobs:
 
       - name: Setup database
         run: |
-          bundle exec rake test:setup
+          bundle exec rails db:create db:schema:load
 
       - name: Run tests
         run: bundle exec rspec

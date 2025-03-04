@@ -1,7 +1,7 @@
 test:
   adapter: postgresql
-  database: lexoffice_development
-  username: mcwalina
-  password: Martin93
-  host: localhost
-  port: 5432
+  database: <%= ENV.fetch("TEST_DB_NAME") %>
+  username: <%= ENV.fetch("TEST_DB_USER") %>
+  password: <%= ENV.fetch("TEST_DB_PASSWORD") %>
+  host: <%= ENV.fetch("TEST_DB_HOST") %>
+  port: <%= ENV.fetch("TEST_DB_PORT") %>

@@ -69,8 +69,7 @@ jobs:
 
       - name: Setup database
         run: |
-          bundle exec rake db:create
-          bundle exec rake db:schema:load
+          bundle exec rake test:setup
 
       - name: Run tests
         run: bundle exec rspec

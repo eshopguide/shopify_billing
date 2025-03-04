@@ -16,7 +16,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: true
+          bundler-cache: false
+
+      - name: Update bundle platforms
+        run: |
+          bundle lock --add-platform x86_64-linux
+          bundle install
 
       - name: Run RuboCop
         run: bundle exec rubocop
@@ -59,7 +64,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: true
+          bundler-cache: false  # Changed to false to handle platform issue
+
+      - name: Update bundle platforms
+        run: |
+          bundle lock --add-platform x86_64-linux
+          bundle install
 
       - name: Setup database
         run: |

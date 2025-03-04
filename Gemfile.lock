@@ -110,6 +110,7 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.3.4)
     diff-lcs (1.6.0)
+    docile (1.4.1)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -243,6 +244,12 @@ GEM
       sprockets-rails (>= 2.0.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.1)
+    simplecov_json_formatter (0.1.4)
     sorbet-runtime (0.5.11582)
     sprockets (3.7.5)
       base64
@@ -278,6 +285,7 @@ DEPENDENCIES
   rspec-rails (~> 7.1.1)
   shopify_billing!
   shoulda-matchers (~> 5.3.0)
+  simplecov (~> 0.21.2)
   sprockets-rails
   sqlite3
 

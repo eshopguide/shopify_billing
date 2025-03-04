@@ -36,4 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "shoulda-matchers", "~> 5.3.0"
   spec.add_development_dependency "dotenv-rails", "~> 2.8.1"
   spec.add_development_dependency 'central_event_logger', '0.1.7'
+  spec.add_development_dependency "simplecov", "~> 0.21.2"
+  spec.add_development_dependency "rubocop", "~> 1.50"
+  spec.add_development_dependency "rubocop-rails", "~> 2.19"
+  spec.add_development_dependency "rubocop-rspec", "~> 2.22"
 end

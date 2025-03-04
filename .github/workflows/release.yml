@@ -51,11 +51,7 @@ jobs:
         run: gem build shopify_billing.gemspec
 
       - name: Upload gem to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./shopify_billing-${{ steps.tag.outputs.VERSION }}.gem
-          asset_name: shopify_billing-${{ steps.tag.outputs.VERSION }}.gem
-          asset_content_type: application/octet-stream
+          files: ./shopify_billing-${{ steps.tag.outputs.VERSION }}.gem
+          token: ${{ secrets.GITHUB_TOKEN }}

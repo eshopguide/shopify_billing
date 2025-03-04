@@ -13,6 +13,7 @@ module ShopifyBilling
       render json: plans
     end
 
+    # rubocop:disable Metrics/MethodLength
     def create_charge
       charge = ShopifyBilling::CreateChargeService.call(
         shop: @current_shop,
@@ -27,5 +28,6 @@ module ShopifyBilling
         render json: { success: false }
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ShopifyBilling::BillingPlan, type: :model do
+RSpec.describe ShopifyBilling::BillingPlan do
   describe '#recurring?' do
     let(:recurring_plan) { create(:billing_plan, plan_type: 'recurring') }
     let(:one_time_plan) { create(:billing_plan, plan_type: 'one_time') }
@@ -84,7 +84,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
       create(:charge, shopify_id: app_subscription.id, billing_plan:) unless app_subscription.nil?
     end
 
-    context 'recurring plan' do
+    context 'with recurring plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'recurring') }
 
       context 'when shop has no active subscription' do
@@ -119,10 +119,10 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
       end
     end
 
-    context 'one time plan' do
+    context 'with one time plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'one_time') }
 
-      context 'shop has import unlocked' do
+      context 'with shop has import unlocked' do
         before do
           allow(shop).to receive(:import_unlocked_at).and_return(Time.zone.now)
         end
@@ -132,7 +132,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'shop has import manually unlocked' do
+      context 'with shop has import manually unlocked' do
         before do
           allow(shop).to receive(:import_manually_unlocked_at).and_return(Time.zone.now)
         end
@@ -142,7 +142,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'shop has no import unlocked' do
+      context 'with shop has no import unlocked' do
         before do
           allow(shop).to receive(:import_unlocked_at).and_return(nil)
         end
@@ -157,7 +157,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
   describe '#discount_for_shop' do
     let(:shop) { create(:shop, discount_percent: 10, import_discount_percent: 20) }
 
-    context 'recurring plan' do
+    context 'with recurring plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'recurring') }
 
       it 'returns the correct discount' do
@@ -165,7 +165,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
       end
     end
 
-    context 'one_time plan' do
+    context 'with one_time plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'one_time') }
 
       it 'returns the correct discount' do
@@ -175,10 +175,10 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
   end
 
   describe '#price_for_shop' do
-    context 'recurring discount' do
+    context 'with recurring discount' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'recurring', price: 1000) }
 
-      context 'percent discount' do
+      context 'with percent discount' do
         let(:shop) { create(:shop, discount_percent: 10) }
 
         it 'calculates the correct price' do
@@ -186,7 +186,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'discount above 100%' do
+      context 'with discount above 100%' do
         let(:shop) { create(:shop, discount_percent: 120) }
 
         it 'calculates the correct price' do
@@ -194,7 +194,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'discount has no influence on one_time billing plan' do
+      context 'with discount has no influence on one_time billing plan' do
         let(:billing_plan) { create(:billing_plan, plan_type: 'one_time', price: 1000) }
         let(:shop) { create(:shop, discount_percent: 120) }
 
@@ -204,10 +204,10 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
       end
     end
 
-    context 'one_time discount' do
+    context 'with one_time discount' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'one_time', price: 1000) }
 
-      context 'percent discount' do
+      context 'with percent discount' do
         let(:shop) { create(:shop, import_discount_percent: 10) }
 
         it 'calculates the correct price' do
@@ -215,7 +215,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'discount above 100%' do
+      context 'with discount above 100%' do
         let(:shop) { create(:shop, import_discount_percent: 120) }
 
         it 'calculates the correct price' do
@@ -223,7 +223,7 @@ RSpec.describe ShopifyBilling::BillingPlan, type: :model do
         end
       end
 
-      context 'discount has no influence on recurring billing plan' do
+      context 'with discount has no influence on recurring billing plan' do
         let(:billing_plan) { create(:billing_plan, plan_type: 'recurring', price: 1000) }
         let(:shop) { create(:shop, import_discount_percent: 120) }
 

@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+# rubocop:disable RSpec/StubbedMock
+
 require 'rails_helper'
 
-RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
+RSpec.describe ShopifyBilling::BillingCallbacksController do
   routes { ShopifyBilling::Engine.routes }
 
   let(:shop) { create(:shop) }
@@ -47,43 +49,43 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
     end
 
     it 'requires shop_id parameter' do
-      expect {
+      expect do
         get :handle_charge, params: {
           charge_id: charge_id,
           billing_plan_id: billing_plan.id,
           token: token
         }
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
 
     it 'requires charge_id parameter' do
-      expect {
+      expect do
         get :handle_charge, params: {
           shop_id: shop.id,
           billing_plan_id: billing_plan.id,
           token: token
         }
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
 
     it 'requires billing_plan_id parameter' do
-      expect {
+      expect do
         get :handle_charge, params: {
           shop_id: shop.id,
           charge_id: charge_id,
           token: token
         }
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
 
     it 'requires token parameter' do
-      expect {
+      expect do
         get :handle_charge, params: {
           shop_id: shop.id,
           charge_id: charge_id,
           billing_plan_id: billing_plan.id
         }
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
 
     context 'when coupon code is provided' do
@@ -143,3 +145,4 @@ RSpec.describe ShopifyBilling::BillingCallbacksController, type: :controller do
     end
   end
 end
+# rubocop:enable RSpec/StubbedMock

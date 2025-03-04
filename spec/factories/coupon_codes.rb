@@ -6,7 +6,7 @@ FactoryBot.define do
     redeemed { false }
     shop_id { nil }
     free_days { [1..60].sample }
-    validity { Date.today + rand(1..60).days }
+    validity { Time.zone.today + rand(1..60).days }
     type { 'ShopifyBilling::CouponCode' }
     redeem_counter { rand(1..10) }
 

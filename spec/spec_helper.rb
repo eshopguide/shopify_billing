@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails'
 require 'bundler'
 require 'combustion'
@@ -19,5 +21,6 @@ end
 require 'rspec/rails'
 
 RSpec.configure do |config|
+  config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = true
 end

@@ -12,7 +12,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
   end
   let(:recurring_charge) do
     double('ShopifyAPI::RecurringApplicationCharge', id: 123, status: 'active', test: false,
-           current_period_end: 1.month.from_now)
+                                                     current_period_end: 1.month.from_now)
   end
   let(:service) do
     described_class.new(shop:, billing_plan_id: billing_plan.id, host:, coupon_code: coupon&.coupon_code)
@@ -49,12 +49,11 @@ RSpec.describe ShopifyBilling::CreateChargeService do
       end
 
       it 'creates a charge' do
-        allow(billing_plan).to receive(:recurring?).and_return(false)
-        allow(billing_plan).to receive(:one_time?).and_return(true)
+        allow(billing_plan).to receive_messages(recurring?: false, one_time?: true)
 
-        expect(ShopifyAPI::ApplicationCharge).to receive(:new)
-                                                   .with(from_hash: kind_of(Hash))
-                                                   .and_return(one_time_charge)
+        allow(ShopifyAPI::ApplicationCharge).to receive(:new)
+          .with(from_hash: kind_of(Hash))
+          .and_return(one_time_charge)
         expect(one_time_charge).to receive(:save!)
 
         expect { service.call }.not_to raise_error
@@ -112,7 +111,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         end
 
         it 'creates a recurring application charge' do
-          expect(ShopifyAPI::RecurringApplicationCharge)
+          allow(ShopifyAPI::RecurringApplicationCharge)
             .to receive(:new).with(from_hash: kind_of(Hash)).and_return(recurring_charge)
           expect(recurring_charge).to receive(:save!)
 
@@ -125,10 +124,10 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         let(:coupon) { nil }
 
         it 'creates a recurring application charge' do
-          expect(ShopifyAPI::RecurringApplicationCharge)
+          allow(ShopifyAPI::RecurringApplicationCharge)
             .to receive(:new).with(from_hash: kind_of(Hash)).and_return(recurring_charge)
           expect(recurring_charge).to receive(:save!)
-          expect_any_instance_of(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
+          expect(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
           expect(billing_plan).not_to receive(:apply_coupon)
 
           service.call
@@ -138,17 +137,16 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
     context 'when billing plan is not recurring' do
       before do
-        allow(billing_plan).to receive(:recurring?).and_return(false)
-        allow(billing_plan).to receive(:one_time?).and_return(true)
+        allow(billing_plan).to receive_messages(recurring?: false, one_time?: true)
       end
 
       it 'creates a one-time application charge and does not apply coupon' do
-        expect(ShopifyAPI::ApplicationCharge).to receive(:new)
-                                                   .with(from_hash: kind_of(Hash))
-                                                   .and_return(one_time_charge)
+        allow(ShopifyAPI::ApplicationCharge).to receive(:new)
+          .with(from_hash: kind_of(Hash))
+          .and_return(one_time_charge)
         expect(one_time_charge).to receive(:save!)
 
-        expect_any_instance_of(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
+        expect(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
         expect(billing_plan).not_to receive(:apply_coupon)
 
         expect { service.call }.to change(ShopifyBilling::Charge, :count).by(1)
@@ -163,7 +161,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         stub_const('ENV', ENV.to_hash.merge('TEST_CHARGE' => 'true'))
       end
 
-      context 'development billing plan' do
+      context 'when development billing plan' do
         let(:billing_plan) { create(:billing_plan, development_plan: true) }
 
         it 'creates a test charge' do
@@ -173,7 +171,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         end
       end
 
-      context 'production billing plan' do
+      context 'when production billing plan' do
         let(:billing_plan) { create(:billing_plan, development_plan: false) }
 
         it 'creates a production charge' do
@@ -189,7 +187,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         stub_const('ENV', ENV.to_hash.merge('TEST_CHARGE' => 'false'))
       end
 
-      context 'development billing plan' do
+      context 'when development billing plan' do
         let(:billing_plan) { create(:billing_plan, development_plan: true) }
 
         it 'creates a test charge' do
@@ -199,7 +197,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         end
       end
 
-      context 'production billing plan' do
+      context 'when production billing plan' do
         let(:billing_plan) { create(:billing_plan, development_plan: false) }
 
         it 'creates a production charge' do
@@ -209,7 +207,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         end
       end
 
-      context 'internal test shop' do
+      context 'when internal test shop' do
         let(:shop) { create(:shop, internal_test_shop: true) }
 
         it 'creates a test charge' do

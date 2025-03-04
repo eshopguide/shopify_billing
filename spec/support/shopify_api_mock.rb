@@ -11,17 +11,16 @@ end
 
 # Mock ShopifyAPI namespace and classes for testing
 module ShopifyAPI
-
   module Auth
-    def self.embedded_app_url(host)
-      "https://admin.shopify.com/apps/my-app"
+    def self.embedded_app_url(_host)
+      'https://admin.shopify.com/apps/my-app'
     end
 
     class Session
       attr_reader :shop, :access_token, :scope
 
       def self.find_by_shop(shop_domain)
-        new(shop: shop_domain, access_token: "test_token", scope: "read_products,write_products")
+        new(shop: shop_domain, access_token: 'test_token', scope: 'read_products,write_products')
       end
 
       def initialize(shop:, access_token:, scope:)
@@ -33,7 +32,7 @@ module ShopifyAPI
   end
 
   class RecurringApplicationCharge
-    def self.find(id:)
+    def self.find(*)
       new
     end
 
@@ -52,7 +51,7 @@ module ShopifyAPI
     end
 
     def trial_ends_on
-      @trial_ends_on || (Date.today + 14)
+      @trial_ends_on || (Time.zone.today + 14)
     end
 
     def price
@@ -65,7 +64,7 @@ module ShopifyAPI
   end
 
   class ApplicationCharge
-    def self.find(id:)
+    def self.find(*)
       new
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dotenv'
 Dotenv.load('.env.test')
 
@@ -10,7 +12,7 @@ require 'factory_bot_rails'
 require 'database_cleaner/active_record'
 require 'shoulda/matchers'
 
-Dir[ShopifyBilling::Engine.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[ShopifyBilling::Engine.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
@@ -20,7 +22,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.around(:each) do |example|
+  config.around do |example|
     DatabaseCleaner.cleaning do
       example.run
     end

@@ -2,13 +2,13 @@
 
 module ShopifyBilling
   class BaseReportingService < ShopifyBilling::ApplicationService
-
     def verification_token
       Digest::SHA1.hexdigest([@shop.id, @billing_plan.id].join('|'))
     end
 
     protected
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def report_event(params)
       ShopifyBilling.event_reporter.log_event(
         event_name: params.fetch(:event_name),
@@ -22,12 +22,13 @@ module ShopifyBilling
       )
     rescue StandardError => e
       Honeybadger.notify(e, context: {
-        event_name: params[:event_name],
-        user_id: params[:customer_myshopify_domain],
-        event_type: params[:event_type],
-        error_message: e.message
-      })
+                           event_name: params[:event_name],
+                           user_id: params[:customer_myshopify_domain],
+                           event_type: params[:event_type],
+                           error_message: e.message
+                         })
       Rails.logger.error("Failed to report #{params[:event_name]} event: #{e.message}")
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
   end
 end

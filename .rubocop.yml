@@ -1,10 +1,12 @@
 require:
-  - rubocop-rails
   - rubocop-rspec
+
+plugins:
+  - rubocop-rails
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.1
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
@@ -21,5 +23,45 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - '*.gemspec'
 
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MessageChain:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/BeEq:
+  Enabled: false
+
 Layout/LineLength:
-  Max: 120 
+  Max: 120
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/shopify_billing/select_available_billing_plans_service.rb'
+    - 'app/services/shopify_billing/handle_charge_service.rb'
+    - 'app/services/shopify_billing/create_charge_service.rb'
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/shopify_billing/billing_plan.rb'
+    - 'app/models/shopify_billing/campaign_coupon_code.rb'
+

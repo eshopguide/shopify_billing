@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module ShopifyBilling
   class SelectAvailableBillingPlansService < ShopifyBilling::ApplicationService
@@ -6,6 +7,7 @@ module ShopifyBilling
       @coupon_code = coupon_code
     end
 
+    # rubocop:disable Metrics/MethodLength
     def call
       billing_plans = BillingPlan.where('id > 0').order('price')
 
@@ -26,9 +28,11 @@ module ShopifyBilling
 
       transform_billing_plans(billing_plans)
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 
+    # rubocop:disable Metrics/MethodLength
     def transform_billing_plans(billing_plans)
       billing_plans.group_by(&:plan_type).transform_values do |plans|
         plans.map do |billing_plan|
@@ -48,5 +52,6 @@ module ShopifyBilling
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

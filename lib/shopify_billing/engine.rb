@@ -12,12 +12,10 @@ module ShopifyBilling
       g.factory_bot dir: 'spec/factories'
     end
 
-    initializer "shopify_billing.check_central_event_logger" do
-      begin
-        require 'central_event_logger'
-      rescue LoadError
-        # CentralEventLogger is not available, we'll use the null reporter
-      end
+    initializer 'shopify_billing.check_central_event_logger' do
+      require 'central_event_logger'
+    rescue LoadError
+      # CentralEventLogger is not available, we'll use the null reporter
     end
   end
 end

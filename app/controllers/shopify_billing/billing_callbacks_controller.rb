@@ -2,7 +2,6 @@
 
 module ShopifyBilling
   class BillingCallbacksController < ShopifyBilling::ApplicationController
-
     def handle_charge
       result = ShopifyBilling::HandleChargeService.call(
         shop_id: params.require(:shop_id),

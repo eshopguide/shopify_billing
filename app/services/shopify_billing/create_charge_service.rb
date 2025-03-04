@@ -9,6 +9,7 @@ module ShopifyBilling
       @host = host
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
     def call
       return if @shop.nil? || @billing_plan.nil? || @host.nil?
 
@@ -43,6 +44,7 @@ module ShopifyBilling
 
       charge
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
 
     private
 
@@ -64,13 +66,14 @@ module ShopifyBilling
         name: @billing_plan.name,
         price: @billing_plan.price_for_shop(@shop),
         trial_days: @billing_plan.trial_days_for_shop(@shop),
-        return_url:,
+        return_url: return_url,
         test: ENV.fetch('TEST_CHARGE').to_s.casecmp('true').zero? ||
           @billing_plan.development_plan? ||
           @shop.internal_test_shop?
       }
     end
 
+    # rubocop:disable Metrics/MethodLength
     def return_url
       params = {
         shop_id: @shop.id,
@@ -80,13 +83,13 @@ module ShopifyBilling
       }
       params[:coupon_code] = @coupon_code if @coupon_code.present? && @billing_plan.recurring?
 
-
-      url = URI::HTTPS.build(
+      URI::HTTPS.build(
         host: ENV.fetch('HOST_NAME'),
         path: '/shopify_billing/handle_charge',
         query: params.to_query
       ).to_s
     end
+    # rubocop:enable Metrics/MethodLength
 
     def verification_token
       Digest::SHA1.hexdigest([@shop.id, @billing_plan.id].join('|'))

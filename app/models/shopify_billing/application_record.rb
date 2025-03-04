@@ -5,5 +5,3 @@ module ShopifyBilling
     self.abstract_class = true
   end
 end
-
- 

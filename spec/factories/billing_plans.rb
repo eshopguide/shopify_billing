@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :billing_plan, class: 'ShopifyBilling::BillingPlan' do
-    sequence(:id, 1)
     name { 'Import' }
     short_name { 'Import' }
     price { rand(0.0...100.0).round(2) }

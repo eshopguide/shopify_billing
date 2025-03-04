@@ -53,6 +53,7 @@ module ShopifyBilling
       coupon.redeem(@shop)
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def process_billing_plan(charge)
       if @billing_plan.recurring?
         @previous_plan_id = @shop.billing_plan&.id
@@ -70,11 +71,13 @@ module ShopifyBilling
         'import_plan_activated'
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def verification_token
       Digest::SHA1.hexdigest([@shop.id, @billing_plan.id].join('|'))
     end
 
+    # rubocop:disable Metrics/MethodLength
     def log_purchase_event(charge)
       event_name = @billing_plan.recurring? ? 'plan_activation' : 'one_time_purchase'
       external_id = if @billing_plan.recurring?
@@ -101,6 +104,7 @@ module ShopifyBilling
         external_id:
       )
     end
+    # rubocop:enable Metrics/MethodLength
 
     def determine_change_type(previous_plan_id)
       return 'new' if previous_plan_id.nil? || previous_plan_id.zero?

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ShopifyBilling::BillingsController, type: :controller do
+RSpec.describe ShopifyBilling::BillingsController do
   routes { ShopifyBilling::Engine.routes }
 
   let(:shop) { create(:shop) }
@@ -23,11 +23,11 @@ RSpec.describe ShopifyBilling::BillingsController, type: :controller do
     it 'returns available billing plans' do
       get :show
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)).to eq(plans.as_json)
+      expect(response.parsed_body).to eq(plans.as_json)
     end
 
     it 'passes coupon code to the service when provided' do
-      expect(ShopifyBilling::SelectAvailableBillingPlansService).to receive(:call)
+      allow(ShopifyBilling::SelectAvailableBillingPlansService).to receive(:call)
         .with(shop: shop, coupon_code: 'ABC123')
         .and_return(plans)
 
@@ -53,14 +53,14 @@ RSpec.describe ShopifyBilling::BillingsController, type: :controller do
       post :create_charge, params: { plan_id: billing_plan.id }
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)).to eq({
-                                                'success' => true,
-                                                'confirmation_url' => 'https://example.com/confirm'
-                                              })
+      expect(response.parsed_body).to eq({
+                                           'success' => true,
+                                           'confirmation_url' => 'https://example.com/confirm'
+                                         })
     end
 
     it 'passes coupon code to the service when provided' do
-      expect(ShopifyBilling::CreateChargeService).to receive(:call)
+      allow(ShopifyBilling::CreateChargeService).to receive(:call)
         .with(
           shop: shop,
           billing_plan_id: billing_plan.id.to_s,
@@ -79,13 +79,13 @@ RSpec.describe ShopifyBilling::BillingsController, type: :controller do
       post :create_charge, params: { plan_id: billing_plan.id }
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)).to eq({ 'success' => false })
+      expect(response.parsed_body).to eq({ 'success' => false })
     end
 
     it 'requires plan_id parameter' do
-      expect {
+      expect do
         post :create_charge
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
   end
 end

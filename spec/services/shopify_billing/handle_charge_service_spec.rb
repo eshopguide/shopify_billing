@@ -80,7 +80,7 @@ RSpec.describe ShopifyBilling::HandleChargeService do
         end
 
         context 'when upgrading from a lower plan' do
-          let!(:previous_plan) { create(:billing_plan, name: 'Basic Plan', price: 9.99) }
+          let(:previous_plan) { create(:billing_plan, name: 'Basic Plan', price: 9.99) }
           let!(:shop) { create(:shop) }
 
           it 'logs the activation as upgrade' do

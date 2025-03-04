@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ShopifyBilling::CampaignCouponCode, type: :model do
+RSpec.describe ShopifyBilling::CampaignCouponCode do
   let(:campaign_coupon_code) { create(:campaign_coupon_code) }
   let(:shop) { create(:shop) }
 

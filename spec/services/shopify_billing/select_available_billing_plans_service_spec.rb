@@ -14,11 +14,8 @@ RSpec.describe ShopifyBilling::SelectAvailableBillingPlansService do
     before do
       allow(ShopifyBilling::BillingPlan)
         .to receive_message_chain(:where, :order)
-              .and_return([current_plan, recurring_plan, one_time_plan])
-
-      allow(shop).to receive(:development_shop?).and_return(false)
-      allow(shop).to receive(:billing_plan).and_return(current_plan)
-
+        .and_return([current_plan, recurring_plan, one_time_plan])
+      allow(shop).to receive_messages(development_shop?: false, billing_plan: current_plan)
       allow(current_plan).to receive(:current_for_shop?).with(shop).and_return(true)
       allow(recurring_plan).to receive(:current_for_shop?).with(shop).and_return(false)
       allow(one_time_plan).to receive(:current_for_shop?).with(shop).and_return(false)
@@ -35,7 +32,7 @@ RSpec.describe ShopifyBilling::SelectAvailableBillingPlansService do
       end
 
       context 'when the shop is a development shop' do
-        let!(:recurring_plan) { create(:billing_plan, plan_type: 'recurring', available_for_development_shop: true) }
+        let(:recurring_plan) { create(:billing_plan, plan_type: 'recurring', available_for_development_shop: true) }
 
         it 'only returns development plans' do
           allow(shop).to receive(:development_shop?).and_return(true)
@@ -64,7 +61,7 @@ RSpec.describe ShopifyBilling::SelectAvailableBillingPlansService do
       before do
         allow(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code:).and_return(coupon)
         allow(coupon).to receive(:coupon_valid?).with(shop).and_return(true)
-        allow_any_instance_of(ShopifyBilling::BillingPlan).to receive(:apply_coupon).with(coupon)
+        allow(ShopifyBilling::BillingPlan).to receive(:apply_coupon).with(coupon)
       end
 
       it 'applies the coupon to recurring billing plans' do

@@ -2,20 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe ShopifyBilling::OneTimeCouponCode, type: :model do
+RSpec.describe ShopifyBilling::OneTimeCouponCode do
   let(:one_time_coupon_code) { create(:one_time_coupon_code) }
   let(:shop) { create(:shop) }
 
   describe '#assign_to_shop' do
     context 'when coupon is valid' do
       before do
-        allow(one_time_coupon_code).to receive(:valid?).and_return(true)
-        allow(one_time_coupon_code).to receive(:coupon_valid?).and_return(true)
+        allow(one_time_coupon_code).to receive_messages(valid?: true, coupon_valid?: true)
       end
 
       it 'assigns the coupon to the shop' do
         expect { one_time_coupon_code.assign_to_shop(shop) }
-          .to change { one_time_coupon_code.shop_id }.to(shop.id)
+          .to change(one_time_coupon_code, :shop_id).to(shop.id)
       end
     end
 
@@ -34,19 +33,18 @@ RSpec.describe ShopifyBilling::OneTimeCouponCode, type: :model do
   describe '#redeem' do
     context 'when coupon is valid' do
       before do
-        allow(one_time_coupon_code).to receive(:valid?).and_return(true)
-        allow(one_time_coupon_code).to receive(:coupon_valid?).and_return(true)
+        allow(one_time_coupon_code).to receive_messages(valid?: true, coupon_valid?: true)
         one_time_coupon_code.redeem_counter = 1
       end
 
       it 'marks the coupon as redeemed' do
         expect { one_time_coupon_code.redeem(shop) }
-          .to change { one_time_coupon_code.redeemed }.from(false).to(true)
+          .to change(one_time_coupon_code, :redeemed).from(false).to(true)
       end
 
       it 'decrements the redeem_counter' do
         expect { one_time_coupon_code.redeem(shop) }
-          .to change { one_time_coupon_code.redeem_counter }.by(-1)
+          .to change(one_time_coupon_code, :redeem_counter).by(-1)
       end
     end
 

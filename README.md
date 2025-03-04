@@ -1,5 +1,19 @@
 # ShopifyBilling
-Short description and motivation.
+
+A Ruby on Rails engine for handling Shopify billing and subscription management in Shopify applications.
+
+## Overview
+
+ShopifyBilling provides a complete solution for managing Shopify app billing, including:
+
+- Recurring application charges (subscriptions)
+- One-time application charges
+- Trial periods
+- Coupon code management
+- Billing plan management
+- Charge creation and verification
+
+This gem is designed to work with the Shopify API and integrates with the `shopify_app` gem to provide a seamless billing experience for your Shopify app users.
 
 ## Usage
 How to use my plugin.

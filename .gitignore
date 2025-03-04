@@ -9,3 +9,5 @@
 /test/dummy/storage/
 /test/dummy/tmp/
 .idea/
+.env
+.env.test

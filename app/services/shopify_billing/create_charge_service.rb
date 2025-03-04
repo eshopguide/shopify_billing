@@ -82,7 +82,7 @@ module ShopifyBilling
 
 
       url = URI::HTTPS.build(
-        host: 'matt-lexoffice-shopify.eu.ngrok.io',
+        host: ENV.fetch('HOST_NAME'),
         path: '/shopify_billing/handle_charge',
         query: params.to_query
       ).to_s

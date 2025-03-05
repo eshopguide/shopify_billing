@@ -49,5 +49,11 @@ module ShopifyBilling
       discounted_price = (price * ((100 - discount) / 100.0))
       [discounted_price, 1].max
     end
+
+    def plan_available?(shop)
+      return false if !shop.plan_active? && plan_type == 'one_time'
+
+      true
+    end
   end
 end

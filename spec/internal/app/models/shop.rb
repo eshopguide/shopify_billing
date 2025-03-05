@@ -34,19 +34,7 @@ class Shop < ActiveRecord::Base
     internal_test_shop
   end
 
-  def shopify_domain
-    "test-shop.myshopify.com"
-  end
-
-  def name
-    "Test Shop"
-  end
-
-  def shop_owner
-    "Test Owner"
-  end
-
-  def email
-    "test@example.com"
+  def plan_active?
+    billing_plan.present?
   end
 end

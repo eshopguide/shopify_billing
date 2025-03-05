@@ -24,7 +24,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:14
+        image: postgres:13.2
         ports:
           - 5432:5432
         env:
@@ -34,12 +34,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.4
           bundler-cache: false
-          cache-version: 2
 
       - uses: actions/setup-node@v3
         with:
@@ -93,7 +93,7 @@ jobs:
 
       - name: Set up test database
         run: |
-          bundle exec rake db:create db:schema:load RAILS_ENV=test
+          bundle exec ruby -e "require 'combustion'; Combustion.initialize! :active_record; ActiveRecord::Tasks::DatabaseTasks.create_current; ActiveRecord::Tasks::DatabaseTasks.load_schema_current"
         env:
           RAILS_ENV: test
 

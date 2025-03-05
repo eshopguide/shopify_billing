@@ -32,7 +32,7 @@ module ShopifyBilling
 
     private
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def transform_billing_plans(billing_plans)
       billing_plans.group_by(&:plan_type).transform_values do |plans|
         plans.map do |billing_plan|
@@ -47,11 +47,12 @@ module ShopifyBilling
             trial_days: billing_plan.trial_days_for_shop(@shop),
             base_trial_days: billing_plan.base_trial_days,
             plan_type: billing_plan.plan_type,
-            development_plan: billing_plan.development_plan?
+            development_plan: billing_plan.development_plan?,
+            available: billing_plan.plan_available?(@shop)
           }
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
   end
 end

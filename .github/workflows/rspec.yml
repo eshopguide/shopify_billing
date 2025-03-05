@@ -38,7 +38,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.4
-          bundler-cache: true
+          bundler-cache: false
           cache-version: 2
 
       - uses: actions/setup-node@v3
@@ -55,6 +55,11 @@ jobs:
 
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
+
+      - name: Update bundle platforms
+        run: |
+          bundle lock --add-platform x86_64-linux
+          bundle install
 
       - name: Install dependencies
         run: |

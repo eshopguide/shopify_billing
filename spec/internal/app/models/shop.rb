@@ -18,7 +18,7 @@ class Shop < ActiveRecord::Base
     false
   end
 
-  def import_unlocked
+  def import_unlocked?
     import_manually_unlocked_at.present? || import_unlocked_at.present?
   end
 

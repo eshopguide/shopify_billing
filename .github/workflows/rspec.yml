@@ -1,35 +1,27 @@
-name: Ruby Tests and Linting
+name: RSpec
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+on: [push, workflow_dispatch]
 
 jobs:
-  lint:
+  check_commit:
     runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.skip_check.outputs.skip }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: false
-
-      - name: Update bundle platforms
+      - name: Check for skip ci tag in commit message
+        id: skip_check
         run: |
-          bundle lock --add-platform x86_64-linux
-          bundle install
+          echo "::set-output name=skip::$(git log -1 --pretty=%B | grep -E '\[skip ci\]|\[ci skip\]|\[no ci\]' && echo 'true' || echo 'false')"
 
-      - name: Run RuboCop
-        run: bundle exec rubocop
-
-  test:
-    needs: lint
+  rspec:
+    needs: check_commit
+    if: needs.check_commit.outputs.skip == 'false'
     runs-on: ubuntu-latest
-    
+    name: Run RSpec tests
+
     services:
       postgres:
         image: postgres:14
@@ -38,50 +30,88 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
-          POSTGRES_DB: lexoffice_test
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-    env:
-      RAILS_ENV: test
-      DB_NAME: lexoffice_test
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: localhost
-      DB_PORT: 5432
-      HOST_NAME: localhost
-      APP_HOME: https://test-host/
-      APP_NAME: lexoffice-integration
-      CENTRAL_EVENT_LOGGER_API_BASE_URL: https://testurl.com
-      CENTRAL_EVENT_LOGGER_API_KEY: test_key
-      CENTRAL_EVENT_LOGGER_API_SECRET: test_secret
-      REPORTING_JOB_QUEUE: default
-      TRIAL_DAYS: 7
-      TEST_CHARGE: true
-
     steps:
-      - uses: actions/checkout@v3
-
+      - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
-          bundler-cache: false
+          ruby-version: 3.1.4
+          bundler-cache: true
+          cache-version: 2
 
-      - name: Update bundle platforms
-        run: |
-          bundle lock --add-platform x86_64-linux
-          bundle install
-
-      - name: Setup database
-        run: |
-          bundle exec rails db:create db:schema:load
-
-      - name: Run tests
-        run: bundle exec rspec
-
-      - name: Upload coverage results
-        uses: actions/upload-artifact@v4
-        if: always()
+      - uses: actions/setup-node@v3
         with:
-          name: coverage-report
-          path: coverage
+          node-version: 16.19.0
+
+      - name: Cache Bundler
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: bundler-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            bundler-
+
+      - name: Install dependent libraries
+        run: sudo apt-get install libpq-dev
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --path vendor/bundle
+
+      - name: Set up environment variables
+        run: |
+          echo "DB_NAME=lexoffice_test" >> $GITHUB_ENV
+          echo "DB_USER=postgres" >> $GITHUB_ENV
+          echo "DB_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DB_HOST=localhost" >> $GITHUB_ENV
+          echo "DB_PORT=5432" >> $GITHUB_ENV
+          echo "APP_NAME=ShopifyBilling" >> $GITHUB_ENV
+          echo "TRIAL_DAYS=14" >> $GITHUB_ENV
+          echo "HOST_NAME=localhost" >> $GITHUB_ENV
+          echo "TEST_CHARGE=true" >> $GITHUB_ENV
+
+      - name: Create database.yml for Combustion
+        run: |
+          mkdir -p spec/internal/config
+          cat > spec/internal/config/database.yml << EOF
+          test:
+            adapter: postgresql
+            database: lexoffice_test
+            username: postgres
+            password: postgres
+            host: localhost
+            port: 5432
+          EOF
+
+      - name: Set up test database
+        run: |
+          bundle exec rake db:create db:schema:load RAILS_ENV=test
+        env:
+          RAILS_ENV: test
+
+      - name: Assets Cache
+        id: assets-cache
+        uses: actions/cache@v4
+        with:
+          path: public/packs-test
+          key: ${{ runner.os }}-assets-${{ github.ref }}
+          restore-keys: |
+            ${{ runner.os }}-assets-
+
+      - name: Run RSpec tests
+        run: |
+          bundle exec rspec
+        env:
+          RAILS_ENV: test
+          DB_NAME: lexoffice_test
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_HOST: localhost
+          DB_PORT: 5432
+          HOST_NAME: localhost
+          APP_NAME: ShopifyBilling
+          TRIAL_DAYS: 14
+          TEST_CHARGE: true

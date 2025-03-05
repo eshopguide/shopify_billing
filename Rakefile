@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'combustion'
+require 'rspec/core/rake_task'
 
-APP_RAKEFILE = File.expand_path('test/dummy/Rakefile', __dir__)
-load 'rails/tasks/engine.rake'
+# Initialize Combustion
+Combustion.initialize! :active_record, :action_controller, :action_view
 
-load 'rails/tasks/statistics.rake'
+# Load Rails tasks
+require 'rails/tasks'
+
+# Load RSpec tasks
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
 
 require 'bundler/gem_tasks'

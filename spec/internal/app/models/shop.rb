@@ -37,4 +37,10 @@ class Shop < ActiveRecord::Base
   def plan_active?
     billing_plan.present?
   end
+
+  def after_activate_one_time_purchase(_charge)
+    update!(import_unlocked_at: Time.zone.now)
+
+    NotificationsJob.perform_async(@shop.to_json, 'import', 'notification') if Rails.env.production?
+  end
 end

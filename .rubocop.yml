@@ -45,6 +45,10 @@ RSpec/MessageChain:
 RSpec/VerifiedDoubles:
   Enabled: false
 
+RSpec/StubbedMock:
+  Exclude:
+    - 'spec/controllers/**/*'
+
 RSpec/BeEq:
   Enabled: false
 

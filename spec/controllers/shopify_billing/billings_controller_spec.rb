@@ -15,6 +15,84 @@ RSpec.describe ShopifyBilling::BillingsController do
     allow(Shop).to receive(:find_by).with(shopify_domain: shop.shopify_domain).and_return(shop)
   end
 
+  describe 'POST #check_coupon' do
+    context 'without code param' do
+      it 'raises ParameterMissing error' do
+        expect do
+          post :check_coupon
+        end.to raise_error(ActionController::ParameterMissing)
+      end
+    end
+
+    context 'with non-existing code' do
+      it 'raises RecordNotFound error' do
+        expect(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code: 'non-existing-code')
+                                                                .and_raise(ActiveRecord::RecordNotFound)
+
+        expect do
+          post :check_coupon, params: { coupon_code: 'non-existing-code' }
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'with invalid code' do
+      let(:coupon) { create(:coupon_code) }
+
+      it 'returns 404' do
+        expect(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code: coupon.coupon_code)
+                                                                .and_return(coupon)
+        expect(coupon).to receive(:coupon_valid?).with(shop).and_return(false)
+
+        post :check_coupon, params: { coupon_code: coupon.coupon_code }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'with valid code' do
+      let(:coupon) { create(:coupon_code) }
+
+      it 'returns success' do
+        expect(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code: coupon.coupon_code)
+                                                                .and_return(coupon)
+        expect(coupon).to receive(:coupon_valid?).with(shop).and_return(true)
+
+        post :check_coupon, params: { coupon_code: coupon.coupon_code }
+        expect(response).to have_http_status(:ok)
+        expect(response.parsed_body['valid']).to eq(true)
+      end
+    end
+
+    context 'with special EshopGuide60 coupon code' do
+      let(:coupon) { create(:coupon_code, coupon_code: 'EshopGuide60') }
+      let(:current_charge) { nil }
+
+      before do
+        allow(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code: 'EshopGuide60').and_return(coupon)
+        allow(shop).to receive(:with_shopify_session).and_yield
+        allow(ShopifyAPI::RecurringApplicationCharge).to receive(:current).and_return(current_charge)
+      end
+
+      context 'when shop has no current charge' do
+        it 'returns success' do
+          expect(coupon).to receive(:coupon_valid?).with(shop).and_return(true)
+
+          post :check_coupon, params: { coupon_code: 'EshopGuide60' }
+          expect(response).to have_http_status(:ok)
+          expect(response.parsed_body['valid']).to eq(true)
+        end
+      end
+
+      context 'when shop has a current charge' do
+        let(:current_charge) { double('Charge') }
+
+        it 'returns 404' do
+          post :check_coupon, params: { coupon_code: 'EshopGuide60' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
   describe 'GET #show' do
     before do
       allow(ShopifyBilling::SelectAvailableBillingPlansService).to receive(:call).and_return(plans)

@@ -17,10 +17,8 @@ ShopifyBilling provides a complete solution for managing Shopify app billing, in
 
 This gem is designed to work with the Shopify API and integrates with the `shopify_app` gem to provide a seamless billing experience for your Shopify app users.
 
-## Usage
-How to use my plugin.
-
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -37,8 +35,270 @@ Or install it yourself as:
 $ gem install shopify_billing
 ```
 
+## Database Requirements
+
+ShopifyBilling is designed to work with your existing database rather than creating its own separate tables. The gem requires the following tables to be present in your application's database:
+
+### Required Tables
+
+#### billing_plans
+```ruby
+create_table "billing_plans", force: :cascade do |t|
+  t.string "name"
+  t.string "short_name"
+  t.decimal "price"
+  t.integer "warning"
+  t.integer "threshold"
+  t.boolean "default"
+  t.datetime "created_at", precision: nil, null: false
+  t.datetime "updated_at", precision: nil, null: false
+  t.string "matches_shopify_plan"
+  t.string "plan_type"
+  t.text "features", default: [], array: true
+  t.boolean "recommended", default: false
+  t.boolean "development_plan", default: false
+  t.boolean "available_for_development_shop", default: false
+  t.boolean "available_for_production_shop", default: true
+  t.index ["short_name"], name: "index_billing_plans_on_short_name"
+end
+```
+
+#### charges
+```ruby
+create_table "charges", force: true do |t|
+  t.string "shopify_id", null: false
+  t.references "billing_plan"
+  t.timestamps
+end
+```
+
+#### coupon_codes
+```ruby
+create_table "coupon_codes", force: true do |t|
+  t.string "type"
+  t.string "coupon_code", null: false
+  t.boolean "redeemed", default: false
+  t.integer "shop_id"
+  t.integer "redeem_counter", default: 1
+  t.date "validity"
+  t.integer "free_days", default: 0
+  t.timestamps
+end
+```
+
+### Shop Model Requirements
+
+Your application's `Shop` model should have the following relationship:
+
+```ruby
+belongs_to :billing_plan, class_name: 'ShopifyBilling::BillingPlan', optional: true
+```
+
+And should implement these methods:
+
+- `development_shop?` - Returns whether the shop is a development shop
+- `remaining_trial_days` - Returns the number of trial days remaining
+- `import_unlocked?` - Returns whether import functionality is unlocked
+- `reset_app_installation_cache` - Method to reset any app installation cache
+- `with_shopify_session` - Method to execute code within a Shopify session
+- `internal_test_shop?` - Returns whether the shop is an internal test shop
+- `plan_active?` - Returns whether the shop has an active billing plan
+
+### Database Setup
+
+If you're integrating this gem into an existing application, ensure your database already has the required tables. If not, you'll need to create migrations for these tables.
+
+Example migration for creating the required tables:
+
+```ruby
+class CreateShopifyBillingTables < ActiveRecord::Migration[7.0]
+  def change
+    create_table "billing_plans", force: :cascade do |t|
+      t.string "name"
+      t.string "short_name"
+      t.decimal "price"
+      t.integer "warning"
+      t.integer "threshold"
+      t.boolean "default"
+      t.datetime "created_at", precision: nil, null: false
+      t.datetime "updated_at", precision: nil, null: false
+      t.string "matches_shopify_plan"
+      t.string "plan_type"
+      t.text "features", default: [], array: true
+      t.boolean "recommended", default: false
+      t.boolean "development_plan", default: false
+      t.boolean "available_for_development_shop", default: false
+      t.boolean "available_for_production_shop", default: true
+      t.index ["short_name"], name: "index_billing_plans_on_short_name"
+    end
+
+    create_table "charges", force: true do |t|
+      t.string "shopify_id", null: false
+      t.references "billing_plan"
+      t.timestamps
+    end
+
+    create_table "coupon_codes", force: true do |t|
+      t.string "type"
+      t.string "coupon_code", null: false
+      t.boolean "redeemed", default: false
+      t.integer "shop_id"
+      t.integer "redeem_counter", default: 1
+      t.date "validity"
+      t.integer "free_days", default: 0
+      t.timestamps
+    end
+  end
+end
+```
+
+## Configuration
+
+### Environment Variables
+
+The gem requires the following environment variables:
+
+- `APP_NAME` - The name of your Shopify app
+- `TRIAL_DAYS` - Number of trial days for recurring plans (default: 14)
+- `HOST_NAME` - Your app's hostname
+- `TEST_CHARGE` - Set to "true" to create test charges (for development)
+
+### Routes
+
+Mount the engine in your `routes.rb` file:
+
+```ruby
+Rails.application.routes.draw do
+  mount ShopifyBilling::Engine, at: '/shopify_billing'
+  
+  # Your other routes...
+end
+```
+
+This will make the following routes available:
+
+- `POST /shopify_billing/billing/charge` - Create a new charge
+- `GET /shopify_billing/billing/plans` - Get available billing plans
+- `POST /shopify_billing/billing/check_coupon` - Check if a coupon code is valid
+- `GET /shopify_billing/handle_charge` - Handle charge callback from Shopify
+
+## Usage
+
+### Billing Plans
+
+Billing plans represent the different subscription options available to your users.
+
+```ruby
+# Creating a billing plan
+ShopifyBilling::BillingPlan.create!(
+  name: 'Basic Plan',
+  short_name: 'basic',
+  price: 19.99,
+  plan_type: 'recurring',
+  features: ['feature1', 'feature2'],
+  recommended: true,
+  available_for_development_shop: true,
+  available_for_production_shop: true
+)
+
+# Finding a free plan
+free_plan = ShopifyBilling::BillingPlan.free
+```
+
+### Creating Charges
+
+To create a new charge for a shop:
+
+```ruby
+charge = ShopifyBilling::CreateChargeService.call(
+  shop: current_shop,
+  billing_plan_id: plan.id,
+  host: request.host,
+  coupon_code: params[:coupon_code]
+)
+
+if charge&.confirmation_url
+  redirect_to charge.confirmation_url
+else
+  # Handle error
+end
+```
+
+### Getting Available Plans
+
+To get the available billing plans for a shop:
+
+```ruby
+plans = ShopifyBilling::SelectAvailableBillingPlansService.call(
+  shop: current_shop,
+  coupon_code: params[:coupon_code]
+)
+```
+
+### Checking Coupon Codes
+
+To check if a coupon code is valid:
+
+```ruby
+begin
+  coupon = ShopifyBilling::CouponCode.find_by!(coupon_code: params[:coupon_code])
+  
+  if coupon.coupon_valid?(current_shop)
+    # Coupon is valid
+  else
+    # Coupon is invalid
+  end
+rescue ActiveRecord::RecordNotFound
+  # Coupon not found
+end
+```
+
+### Handling Charge Callbacks
+
+The gem automatically handles charge callbacks from Shopify. When a user accepts or declines a charge, Shopify will redirect them to the callback URL, which will be processed by the `HandleChargeService`.
+
+## Models
+
+### BillingPlan
+
+Represents a billing plan with pricing and features.
+
+Key methods:
+- `recurring?` - Returns true if the plan is recurring
+- `one_time?` - Returns true if the plan is one-time
+- `apply_coupon(coupon)` - Apply a coupon to the plan
+- `trial_days_for_shop(shop)` - Get trial days for a shop
+- `price_for_shop(shop)` - Get the price for a shop (including discounts)
+
+### Charge
+
+Represents a Shopify charge (either one-time or recurring).
+
+### CouponCode
+
+Base class for coupon codes.
+
+## Services
+
+### CreateChargeService
+
+Creates a new charge for a shop.
+
+### HandleChargeService
+
+Handles the callback from Shopify after a charge is accepted or declined.
+
+### SelectAvailableBillingPlansService
+
+Returns available billing plans for a shop.
+
 ## Contributing
-Contribution directions go here.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

@@ -9,10 +9,10 @@ module ShopifyBilling
 
     # rubocop:disable Metrics/MethodLength
     def call
-      billing_plans = BillingPlan.where('id > 0').order('price')
+      billing_plans = ShopifyBilling::BillingPlan.where('id > 0').order('price')
 
       if @coupon_code.present?
-        coupon = CouponCode.find_by!(coupon_code: @coupon_code)
+        coupon = ShopifyBilling::CouponCode.find_by!(coupon_code: @coupon_code)
 
         raise InvalidCouponError unless coupon.coupon_valid?(@shop)
 

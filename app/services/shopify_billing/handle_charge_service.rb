@@ -5,7 +5,7 @@ module ShopifyBilling
     def initialize(shop_id:, charge_id:, billing_plan_id:, coupon_code:, token:)
       @shop = Shop.find(shop_id)
       @charge_id = charge_id
-      @billing_plan = BillingPlan.find(billing_plan_id)
+      @billing_plan = ShopifyBilling::BillingPlan.find(billing_plan_id)
       @coupon_code = coupon_code
       @token = token
     end
@@ -109,7 +109,7 @@ module ShopifyBilling
     def determine_change_type(previous_plan_id)
       return 'new' if previous_plan_id.nil? || previous_plan_id.zero?
 
-      previous_plan = BillingPlan.find_by(id: previous_plan_id)
+      previous_plan = ShopifyBilling::BillingPlan.find_by(id: previous_plan_id)
       return 'new' if previous_plan.nil?
 
       @billing_plan.price > previous_plan.price ? 'upgrade' : 'downgrade'

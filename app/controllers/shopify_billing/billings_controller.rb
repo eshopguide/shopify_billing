@@ -15,7 +15,7 @@ module ShopifyBilling
 
     def check_coupon
       coupon_code = params.require(:coupon_code)
-      coupon = CouponCode.find_by!(coupon_code:)
+      coupon = ShopifyBilling::CouponCode.find_by!(coupon_code:)
 
       # Temporary coupon that is only valid for new customers
       if coupon_code == 'EshopGuide60'

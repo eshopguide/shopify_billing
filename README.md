@@ -86,24 +86,6 @@ create_table "coupon_codes", force: true do |t|
 end
 ```
 
-### Shop Model Requirements
-
-Your application's `Shop` model should have the following relationship:
-
-```ruby
-belongs_to :billing_plan, class_name: 'ShopifyBilling::BillingPlan', optional: true
-```
-
-And should implement these methods:
-
-- `development_shop?` - Returns whether the shop is a development shop
-- `remaining_trial_days` - Returns the number of trial days remaining
-- `import_unlocked?` - Returns whether import functionality is unlocked
-- `reset_app_installation_cache` - Method to reset any app installation cache
-- `with_shopify_session` - Method to execute code within a Shopify session
-- `internal_test_shop?` - Returns whether the shop is an internal test shop
-- `plan_active?` - Returns whether the shop has an active billing plan
-
 ### Database Setup
 
 If you're integrating this gem into an existing application, ensure your database already has the required tables. If not, you'll need to create migrations for these tables.

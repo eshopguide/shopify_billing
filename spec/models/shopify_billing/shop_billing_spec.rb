@@ -28,7 +28,7 @@ RSpec.describe ShopifyBilling::ShopBilling do
           double('Plan', displayName: 'Shopify Plus Partner Sandbox', partnerDevelopment: true, shopifyPlus: true)
         )
 
-        expect(shop).to be_development_shop
+        expect(shop.development_shop?).to be_truthy
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe ShopifyBilling::ShopBilling do
         allow(shop).to receive(:shopify_plan).and_return(
           double('Plan', displayName: 'Shopify Basic', partnerDevelopment: false, shopifyPlus: false)
         )
-        expect(shop).not_to be_development_shop
+        expect(shop.development_shop?).to be_falsey
       end
     end
   end

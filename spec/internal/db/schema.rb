@@ -47,6 +47,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_17_111013) do
     t.datetime "import_manually_unlocked_at"
     t.boolean "internal_test_shop", default: false, null: false
     t.datetime "import_unlocked_at"
+    t.boolean :billing_enabled
+    t.string :plan_name
+    t.datetime :subscription_ends_at
     t.index ["legacy_billing_plan_id"], name: "index_shops_on_legacy_billing_plan_id"
     t.index ["lexoffice_organization_id"], name: "index_shops_on_lexoffice_organization_id"
     t.index ["service_instance_id"], name: "index_shops_on_service_instance_id"

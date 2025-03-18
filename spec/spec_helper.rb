@@ -4,6 +4,7 @@ require 'rails'
 require 'bundler'
 require 'combustion'
 require 'simplecov'
+require 'shopify_billing'
 
 SimpleCov.start 'rails' do
   add_filter '/spec/'

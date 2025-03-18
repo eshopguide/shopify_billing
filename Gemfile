@@ -25,6 +25,7 @@ end
 gem 'central_event_logger', '0.1.7', github: 'eshopguide/centralized-logging'
 gem 'sprockets-rails'
 gem 'sqlite3'
+gem "shopify_graphql", "~> 2.0"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"

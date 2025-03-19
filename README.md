@@ -183,8 +183,6 @@ ShopifyBilling::BillingPlan.create!(
   available_for_production_shop: true
 )
 
-# Finding a free plan
-free_plan = ShopifyBilling::BillingPlan.free
 ```
 
 ### Creating Charges

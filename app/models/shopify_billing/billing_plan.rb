@@ -35,7 +35,7 @@ module ShopifyBilling
     end
 
     def current_for_shop?(shop)
-      (recurring? && shop.billing_plan&.id == id) || (one_time? && shop.import_unlocked?)
+      recurring? && shop.billing_plan&.id == id
     end
 
     def discount_for_shop(shop)

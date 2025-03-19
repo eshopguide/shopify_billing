@@ -76,45 +76,39 @@ RSpec.describe ShopifyBilling::BillingPlan do
 
   describe '#current_for_shop?' do
     let(:shop) { create(:shop) }
-    let(:app_subscription) { nil }
-    let(:billing_plan) { create(:billing_plan) }
-
-    before do
-      allow(shop).to receive(:app_subscription).and_return(app_subscription)
-      create(:charge, shopify_id: app_subscription.id, billing_plan:) unless app_subscription.nil?
-    end
 
     context 'with recurring plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'recurring') }
 
-      context 'when shop has no active subscription' do
-        let(:app_subscription) { nil }
+      context 'when shop has this billing plan' do
+        before do
+          allow(shop).to receive(:billing_plan).and_return(billing_plan)
+        end
+
+        it 'returns true' do
+          expect(billing_plan.current_for_shop?(shop)).to eq(true)
+        end
+      end
+
+      context 'when shop has a different billing plan' do
+        let(:other_billing_plan) { create(:billing_plan) }
+        
+        before do
+          allow(shop).to receive(:billing_plan).and_return(other_billing_plan)
+        end
 
         it 'returns false' do
           expect(billing_plan.current_for_shop?(shop)).to eq(false)
         end
       end
 
-      context 'when shop has active subscription' do
-        let(:app_subscription) { double(id: 'gid://shopify/AppSubscription/12345', status: 'ACTIVE') }
-
+      context 'when shop has no billing plan' do
         before do
-          allow(shop).to receive(:billing_plan).and_return(billing_plan)
-          create(:charge, shopify_id: app_subscription.id, billing_plan: billing_plan)
+          allow(shop).to receive(:billing_plan).and_return(nil)
         end
 
-        context 'when billing plan is current for shop' do
-          it 'returns true' do
-            expect(billing_plan.current_for_shop?(shop)).to eq(true)
-          end
-        end
-
-        context 'when billing plan is not current for shop' do
-          let(:other_billing_plan) { create(:billing_plan, plan_type: 'recurring') }
-
-          it 'returns false' do
-            expect(other_billing_plan.current_for_shop?(shop)).to eq(false)
-          end
+        it 'returns false' do
+          expect(billing_plan.current_for_shop?(shop)).to eq(false)
         end
       end
     end
@@ -122,34 +116,8 @@ RSpec.describe ShopifyBilling::BillingPlan do
     context 'with one time plan' do
       let(:billing_plan) { create(:billing_plan, plan_type: 'one_time') }
 
-      context 'with shop has import unlocked' do
-        before do
-          allow(shop).to receive(:import_unlocked_at).and_return(Time.zone.now)
-        end
-
-        it 'returns true' do
-          expect(billing_plan.current_for_shop?(shop)).to eq(true)
-        end
-      end
-
-      context 'with shop has import manually unlocked' do
-        before do
-          allow(shop).to receive(:import_manually_unlocked_at).and_return(Time.zone.now)
-        end
-
-        it 'returns true' do
-          expect(billing_plan.current_for_shop?(shop)).to eq(true)
-        end
-      end
-
-      context 'with shop has no import unlocked' do
-        before do
-          allow(shop).to receive(:import_unlocked_at).and_return(nil)
-        end
-
-        it 'returns false' do
-          expect(billing_plan.current_for_shop?(shop)).to eq(false)
-        end
+      it 'always returns false' do
+        expect(billing_plan.current_for_shop?(shop)).to eq(false)
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ShopifyBilling
   module ShopBilling
     extend ActiveSupport::Concern
@@ -8,7 +10,7 @@ module ShopifyBilling
     end
 
     def feature_enabled?(key)
-      billing_plan.features.include?(key)
+      billing_plan&.features&.include?(key) || false
     end
 
     def billing_plan

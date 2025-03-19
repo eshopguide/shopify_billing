@@ -9,12 +9,16 @@ jobs:
       skip: ${{ steps.skip_check.outputs.skip }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Check for skip ci tag in commit message
         id: skip_check
         run: |
-          echo "::set-output name=skip::$(git log -1 --pretty=%B | grep -E '\[skip ci\]|\[ci skip\]|\[no ci\]' && echo 'true' || echo 'false')"
+          if git log -1 --pretty=%B | grep -qE '\[skip ci\]|\[ci skip\]|\[no ci\]'; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
 
   rspec:
     needs: check_commit
@@ -24,7 +28,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.2
+        image: postgres:16
         ports:
           - 5432:5432
         env:
@@ -33,41 +37,20 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.4
-          bundler-cache: false
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.19.0
-
-      - name: Cache Bundler
-        uses: actions/cache@v4
-        with:
-          path: vendor/bundle
-          key: bundler-${{ hashFiles('Gemfile.lock') }}
-          restore-keys: |
-            bundler-
+          bundler-cache: true
 
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
 
-      - name: Update bundle platforms
+      - name: Set up environment variables and database.yml
         run: |
-          bundle lock --add-platform x86_64-linux
-          bundle install
-
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install --path vendor/bundle
-
-      - name: Set up environment variables
-        run: |
+          # Set environment variables
           echo "DB_NAME=lexoffice_test" >> $GITHUB_ENV
           echo "DB_USER=postgres" >> $GITHUB_ENV
           echo "DB_PASSWORD=postgres" >> $GITHUB_ENV
@@ -77,9 +60,8 @@ jobs:
           echo "TRIAL_DAYS=14" >> $GITHUB_ENV
           echo "HOST_NAME=localhost" >> $GITHUB_ENV
           echo "TEST_CHARGE=true" >> $GITHUB_ENV
-
-      - name: Create database.yml for Combustion
-        run: |
+          
+          # Create database.yml
           mkdir -p spec/internal/config
           cat > spec/internal/config/database.yml << EOF
           test:
@@ -102,7 +84,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: public/packs-test
-          key: ${{ runner.os }}-assets-${{ github.ref }}
+          key: ${{ runner.os }}-assets-${{ hashFiles('**/*.js', '**/*.scss') || github.sha }}
           restore-keys: |
             ${{ runner.os }}-assets-
 

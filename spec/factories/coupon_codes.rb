@@ -15,11 +15,11 @@ FactoryBot.define do
     end
 
     factory :one_time_coupon_code, class: 'ShopifyBilling::OneTimeCouponCode' do
-      type { 'ShopifyBilling::OneTimeCouponCode' }
+      type { 'OneTimeCouponCode' }
     end
 
     factory :campaign_coupon_code, class: 'ShopifyBilling::CampaignCouponCode' do
-      type { 'ShopifyBilling::CampaignCouponCode' }
+      type { 'CampaignCouponCode' }
     end
   end
 end

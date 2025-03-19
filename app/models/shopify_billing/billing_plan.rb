@@ -5,8 +5,6 @@ module ShopifyBilling
     self.table_name = 'billing_plans'
     has_many :shops
 
-    scope :free, -> { find_by(short_name: 'FreePlan') }
-
     def recurring?
       plan_type == 'recurring'
     end

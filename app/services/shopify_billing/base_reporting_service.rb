@@ -21,7 +21,7 @@ module ShopifyBilling
         external_id: params[:external_id]
       )
     rescue StandardError => e
-      Honeybadger.notify(e, context: {
+      Rails.error.report(e, handled: false, context: {
                            event_name: params[:event_name],
                            user_id: params[:customer_myshopify_domain],
                            event_type: params[:event_type],

@@ -11,7 +11,6 @@ PATH
   remote: .
   specs:
     shopify_billing (0.1.0)
-      honeybadger (>= 4.0)
       rails (~> 7.0)
       shopify_api (~> 14.4)
       shopify_app (>= 22.3)
@@ -127,8 +126,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hash_diff (1.1.1)
-    honeybadger (5.16.0)
-      logger
     httparty (0.22.0)
       csv
       mini_mime (>= 1.0.0)
@@ -140,7 +137,6 @@ GEM
       base64
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
-    logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module ShopifySessionHelper
+
+  def with_shopify_session
+    yield if block_given?
+  end
+
   def create_shopify_session(shop_domain)
     ShopifyAPI::Auth::Session.new(
       shop: shop_domain,

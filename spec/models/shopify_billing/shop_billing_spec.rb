@@ -61,29 +61,6 @@ RSpec.describe ShopifyBilling::ShopBilling do
     end
   end
 
-  describe '#import_unlocked?' do
-    context 'when import_manually_unlocked_at is present' do
-      it 'returns true' do
-        shop.update(import_manually_unlocked_at: Time.zone.now)
-        expect(shop.import_unlocked?).to be true
-      end
-    end
-
-    context 'when import_unlocked_at is present' do
-      it 'returns true' do
-        shop.update(import_unlocked_at: Time.zone.now)
-        expect(shop.import_unlocked?).to be true
-      end
-    end
-
-    context 'when both import_manually_unlocked_at and import_unlocked_at are nil' do
-      it 'returns false' do
-        shop.update(import_manually_unlocked_at: nil, import_unlocked_at: nil)
-        expect(shop.import_unlocked?).to be false
-      end
-    end
-  end
-
   describe '#plan_active?' do
     context 'when billing_plan is present' do
       before do
@@ -280,41 +257,6 @@ RSpec.describe ShopifyBilling::ShopBilling do
         expect(NotificationsJob).not_to receive(:perform_async)
 
         shop.after_activate_one_time_purchase(charge)
-      end
-    end
-  end
-
-  describe '#send_install_notifications' do
-    context 'when in production environment' do
-      before do
-        allow(Rails.env).to receive(:production?).and_return(true)
-      end
-
-      it 'sends welcome email notification' do
-        allow(NotificationsJob).to receive(:perform_async)
-        expect(NotificationsJob).to receive(:perform_async).with(shop.to_json, 'new_install', 'email')
-
-        shop.send_install_notifications
-      end
-
-      it 'sends installation notification to slack' do
-        allow(NotificationsJob).to receive(:perform_async)
-
-        expect(NotificationsJob).to receive(:perform_async).with(shop.to_json, 'install', 'notification')
-
-        shop.send_install_notifications
-      end
-    end
-
-    context 'when not in production environment' do
-      before do
-        allow(Rails.env).to receive(:production?).and_return(false)
-      end
-
-      it 'does not send any notifications' do
-        expect(NotificationsJob).not_to receive(:perform_async)
-
-        shop.send_install_notifications
       end
     end
   end

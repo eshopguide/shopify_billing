@@ -4,21 +4,12 @@ module ShopifyBilling
   module ShopBilling
     extend ActiveSupport::Concern
 
-    included do
-      # You can add any class-level configurations here
-      # For example: has_many :invoices
-    end
-
     def feature_enabled?(key)
       billing_plan&.features&.include?(key) || false
     end
 
     def billing_plan
       ShopifyBilling::Charge.find_by(shopify_id: app_subscription&.id)&.billing_plan
-    end
-
-    def import_unlocked?
-      import_manually_unlocked_at.present? || import_unlocked_at.present?
     end
 
     def plan_active?
@@ -63,15 +54,6 @@ module ShopifyBilling
       update!(import_unlocked_at: Time.zone.now)
 
       NotificationsJob.perform_async(@shop.to_json, 'import', 'notification') if Rails.env.production?
-    end
-
-    def send_install_notifications
-      return unless Rails.env.production?
-
-      # send welcome email to shop owner
-      NotificationsJob.perform_async(to_json, 'new_install', 'email')
-      # notify slack channel
-      NotificationsJob.perform_async(to_json, 'install', 'notification')
     end
 
     private

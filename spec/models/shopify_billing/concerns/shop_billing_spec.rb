@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative '../../../../app/models/shopify_billing/concerns/shop_billing'
 
 RSpec.describe ShopifyBilling::ShopBilling do
   let(:shop) { create(:shop) }

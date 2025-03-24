@@ -2,7 +2,6 @@
 
 require 'shopify_billing/version'
 require 'shopify_billing/engine'
-require 'shopify_billing/models/concerns/shop_billing'
 
 module ShopifyBilling
   mattr_accessor :event_reporter_class_name

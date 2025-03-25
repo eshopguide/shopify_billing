@@ -62,32 +62,38 @@ RSpec.describe ShopifyBilling::BillingsController do
       end
     end
 
-    context 'with special EshopGuide60 coupon code' do
-      let(:coupon) { create(:coupon_code, coupon_code: 'EshopGuide60') }
-      let(:current_charge) { nil }
-
+    context 'with new customer coupons' do
       before do
-        allow(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code: 'EshopGuide60').and_return(coupon)
-        allow(shop).to receive(:with_shopify_session).and_yield
-        allow(ShopifyAPI::RecurringApplicationCharge).to receive(:current).and_return(current_charge)
+        allow(ENV).to receive(:fetch).with('NEW_CUSTOMER_COUPONS',
+                                           'EshopGuide60,COMEBACK60').and_return('EshopGuide60,COMEBACK60')
       end
 
-      context 'when shop has no current charge' do
-        it 'returns success' do
-          expect(coupon).to receive(:coupon_valid?).with(shop).and_return(true)
+      %w[EshopGuide60 COMEBACK60].each do |coupon_code|
+        context "with #{coupon_code} coupon" do
+          let(:coupon) { create(:coupon_code, coupon_code: 'EshopGuide60') }
 
-          post :check_coupon, params: { coupon_code: 'EshopGuide60' }
-          expect(response).to have_http_status(:ok)
-          expect(response.parsed_body['valid']).to eq(true)
-        end
-      end
+          context 'when the shop already has a recurring charge' do
+            it 'returns 404' do
+              expect(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code:).and_return(coupon)
+              allow(ShopifyAPI::RecurringApplicationCharge).to receive(:current).and_return(double(id: '123',
+                                                                                                   status: 'ACTIVE'))
 
-      context 'when shop has a current charge' do
-        let(:current_charge) { double('Charge') }
+              post :check_coupon, params: { coupon_code: }
+              expect(response).to have_http_status(:not_found)
+            end
+          end
 
-        it 'returns 404' do
-          post :check_coupon, params: { coupon_code: 'EshopGuide60' }
-          expect(response).to have_http_status(:not_found)
+          context 'when the shop does not have a recurring charge' do
+            it 'returns valid = true' do
+              expect(ShopifyBilling::CouponCode).to receive(:find_by!).with(coupon_code:).and_return(coupon)
+              allow(ShopifyAPI::RecurringApplicationCharge).to receive(:current).and_return(nil)
+              expect(coupon).to receive(:coupon_valid?).with(shop).and_return(true)
+
+              post :check_coupon, params: { coupon_code: }
+              expect(response).to have_http_status(:ok)
+              expect(response.parsed_body['valid']).to eq(true)
+            end
+          end
         end
       end
     end

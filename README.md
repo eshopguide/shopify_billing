@@ -193,15 +193,6 @@ end
 def redirect_to_admin(path = nil, status = nil)
   # Handle redirection to admin
 end
-
-def handle_locale
-  # Handle locale settings
-end
-
-# In your authenticated controller
-def handle_access_scopes
-  # Handle Shopify access scopes
-end
 ```
 
 If you don't configure custom controllers, the gem will use its default implementations which will raise `NotImplementedError` if the required methods are not implemented.

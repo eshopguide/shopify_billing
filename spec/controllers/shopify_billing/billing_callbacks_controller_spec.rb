@@ -18,11 +18,9 @@ RSpec.describe ShopifyBilling::BillingCallbacksController do
     before do
       allow(ShopifyBilling::HandleChargeService).to receive(:call).and_return('activated')
       allow(controller).to receive(:redirect_to_admin)
-      allow(controller).to receive(:handle_locale)
-      allow(controller).to receive(:init_shop_settings)
-      allow(controller).to receive(:handle_access_scopes)
+      allow(controller).to receive(:current_shop).and_return(shop)
       allow(controller).to receive(:shopify_host).and_return('https://example.com')
-      allow(@current_shop).to receive(:with_shopify_session).and_yield
+      allow(shop).to receive(:with_shopify_session).and_yield
     end
 
     it 'calls the HandleChargeService with correct parameters' do

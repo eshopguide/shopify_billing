@@ -17,8 +17,10 @@ module ShopifyBilling
       coupon_code = params.require(:coupon_code)
       coupon = ShopifyBilling::CouponCode.find_by!(coupon_code:)
 
-      # Temporary coupon that is only valid for new customers
-      if coupon_code == 'EshopGuide60'
+      # Temporary coupons that are only valid for new customers
+      new_customer_coupons = ENV.fetch('NEW_CUSTOMER_COUPONS', 'EshopGuide60,COMEBACK60').split(',')
+
+      if new_customer_coupons.include?(coupon_code)
         current_charge = @current_shop.with_shopify_session do
           ShopifyAPI::RecurringApplicationCharge.current
         end

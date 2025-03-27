@@ -164,6 +164,48 @@ This will make the following routes available:
 - `POST /shopify_billing/billing/check_coupon` - Check if a coupon code is valid
 - `GET /shopify_billing/handle_charge` - Handle charge callback from Shopify
 
+### Controller Configuration
+
+The gem allows you to configure the base controllers used for billing functionality. You can do this in your application's initializer:
+
+```ruby
+# config/initializers/shopify_billing.rb
+ShopifyBilling.setup do |config|
+  # Configure the base controller for non-authenticated endpoints
+  config.base_controller = 'YourApp::BaseController'
+  
+  # Configure the controller for authenticated endpoints
+  config.authenticated_controller = 'YourApp::AuthenticatedController'
+  
+  # Configure the event reporter (optional)
+  config.event_reporter_class_name = 'YourApp::EventReporter'
+end
+```
+
+Your custom controllers must implement the following methods:
+
+```ruby
+# In your base controller
+def shopify_host
+  # Return your app's hostname
+end
+
+def redirect_to_admin(path = nil, status = nil)
+  # Handle redirection to admin
+end
+
+def handle_locale
+  # Handle locale settings
+end
+
+# In your authenticated controller
+def handle_access_scopes
+  # Handle Shopify access scopes
+end
+```
+
+If you don't configure custom controllers, the gem will use its default implementations which will raise `NotImplementedError` if the required methods are not implemented.
+
 ## Usage
 
 ### Billing Plans

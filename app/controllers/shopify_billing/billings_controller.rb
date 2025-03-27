@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  class BillingsController < ShopifyBilling::AuthenticatedController
-    before_action :set_current_shop
+  class BillingsController < Object.const_get(ShopifyBilling.authenticated_controller)
+    before_action :init_shop_settings
 
     def show
       plans = ShopifyBilling::SelectAvailableBillingPlansService.call(

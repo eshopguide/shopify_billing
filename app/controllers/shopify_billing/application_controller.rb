@@ -5,31 +5,20 @@ module ShopifyBilling
     protect_from_forgery with: :null_session
     before_action :handle_locale
 
-    private
-
-    def handle_locale
-      locale = params[:locale] || request.headers[:locale]
-      return if locale.blank?
-
-      locale = locale[0..1]
-      begin
-        I18n.locale = locale
-        session[:locale] = locale
-      rescue I18n::InvalidLocale
-        I18n.locale = I18n.default_locale
-        session[:locale] = I18n.default_locale
-      end
-    end
-
     def shopify_host
-      request.headers['x-host'] || params[:host] || session[:host]
+      raise NotImplementedError, 'shopify_host must be implemented by the host application'
     end
 
     def redirect_to_admin(path = nil, status = nil)
-      frontend_url = ShopifyAPI::Auth.embedded_app_url(shopify_host)
-      frontend_url += "/#{path}" if path.present?
-      frontend_url += "?status=#{status}" if status.present?
-      redirect_to(frontend_url, allow_other_host: true)
+      raise NotImplementedError, 'redirect_to_admin must be implemented by the host application'
+    end
+
+    def handle_locale
+      raise NotImplementedError, 'handle_locale must be implemented by the host application'
+    end
+
+    def init_shop_settings
+      raise NotImplementedError, 'init_shop_settings must be implemented by the host application'
     end
   end
 end

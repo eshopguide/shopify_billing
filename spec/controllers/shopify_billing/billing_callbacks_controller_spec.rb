@@ -6,6 +6,7 @@ require 'rails_helper'
 
 RSpec.describe ShopifyBilling::BillingCallbacksController do
   routes { ShopifyBilling::Engine.routes }
+  ShopifyBilling.base_controller = 'ApplicationController'
 
   let(:shop) { create(:shop) }
   let(:billing_plan) { create(:billing_plan) }
@@ -17,6 +18,11 @@ RSpec.describe ShopifyBilling::BillingCallbacksController do
     before do
       allow(ShopifyBilling::HandleChargeService).to receive(:call).and_return('activated')
       allow(controller).to receive(:redirect_to_admin)
+      allow(controller).to receive(:handle_locale)
+      allow(controller).to receive(:init_shop_settings)
+      allow(controller).to receive(:handle_access_scopes)
+      allow(controller).to receive(:shopify_host).and_return('https://example.com')
+      allow(@current_shop).to receive(:with_shopify_session).and_yield
     end
 
     it 'calls the HandleChargeService with correct parameters' do

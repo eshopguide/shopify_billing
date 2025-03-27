@@ -3,13 +3,10 @@
 module ShopifyBilling
   class AuthenticatedController < ShopifyBilling::ApplicationController
     include ShopifyApp::EnsureHasSession
+    before_action :handle_access_scopes
 
-    private
-
-    def set_current_shop
-      return unless current_shopify_session
-
-      @current_shop = Shop.find_by(shopify_domain: current_shopify_session.shop)
+    def handle_access_scopes
+      NotImplementedError 'handle_access_scopes must be implemented by the host application'
     end
   end
 end

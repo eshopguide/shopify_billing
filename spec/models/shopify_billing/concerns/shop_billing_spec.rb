@@ -225,39 +225,8 @@ RSpec.describe ShopifyBilling::Concerns::ShopBilling do
   end
 
   describe '#after_activate_one_time_purchase' do
-    let(:charge) { double('Charge') }
-
-    it 'updates import_unlocked_at to current time' do
-      current_time = Time.zone.now
-      allow(Time.zone).to receive(:now).and_return(current_time)
-
-      expect(shop).to receive(:update!).with(import_unlocked_at: current_time)
-
-      shop.after_activate_one_time_purchase(charge)
-    end
-
-    context 'when in production environment' do
-      before do
-        allow(Rails.env).to receive(:production?).and_return(true)
-      end
-
-      it 'schedules a notifications job' do
-        expect(NotificationsJob).to receive(:perform_async).with(anything(), 'import', 'notification')
-
-        shop.after_activate_one_time_purchase(charge)
-      end
-    end
-
-    context 'when not in production environment' do
-      before do
-        allow(Rails.env).to receive(:production?).and_return(false)
-      end
-
-      it 'does not schedule a notifications job' do
-        expect(NotificationsJob).not_to receive(:perform_async)
-
-        shop.after_activate_one_time_purchase(charge)
-      end
+    it 'raises NotImplementedError' do
+      expect { shop.after_activate_one_time_purchase }.to raise_error(NotImplementedError)
     end
   end
 

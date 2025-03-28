@@ -51,10 +51,8 @@ module ShopifyBilling
         end
       end
 
-      def after_activate_one_time_purchase(_charge)
-        update!(import_unlocked_at: Time.zone.now)
-
-        NotificationsJob.perform_async(@shop.to_json, 'import', 'notification') if Rails.env.production?
+      def after_activate_one_time_purchase
+        raise NotImplementedError, 'after_activate_one_time_purchase must be implemented by the host application'
       end
 
       private

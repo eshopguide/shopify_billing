@@ -67,7 +67,7 @@ module ShopifyBilling
 
         'plan_activated'
       elsif @billing_plan.one_time?
-        @shop.after_activate_one_time_purchase(charge) if @shop.respond_to?(:after_activate_one_time_purchase)
+        @shop.after_activate_one_time_purchase if @shop.respond_to?(:after_activate_one_time_purchase)
         'import_plan_activated'
       end
     end

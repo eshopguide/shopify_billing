@@ -10,16 +10,12 @@ RSpec.describe ShopifyBilling::BillingsController do
 
   before do
     ShopifyBilling.authenticated_controller = 'AuthenticatedController'
-    allow(controller).to receive(:handle_locale)
-    allow(controller).to receive(:handle_access_scopes)
     allow(controller).to receive(:shopify_host).and_return('https://example.com')
     mock_shopify_session(shop)
     allow(controller).to receive(:current_shopify_session).and_return(create_shopify_session(shop.shopify_domain))
     allow(Shop).to receive(:find_by).with(shopify_domain: shop.shopify_domain).and_return(shop)
     allow(shop).to receive(:with_shopify_session).and_yield
-    allow(controller).to receive(:init_shop_settings) do
-      controller.instance_variable_set(:@current_shop, shop)
-    end
+    allow(controller).to receive(:current_shop).and_return(shop)
   end
 
   describe 'POST #check_coupon' do
@@ -127,7 +123,7 @@ RSpec.describe ShopifyBilling::BillingsController do
     end
 
     it 'sets the current shop' do
-      expect(controller).to receive(:init_shop_settings)
+      expect(controller).to receive(:current_shop).and_return(shop)
       get :show
     end
   end

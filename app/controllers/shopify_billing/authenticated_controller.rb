@@ -3,10 +3,9 @@
 module ShopifyBilling
   class AuthenticatedController < ShopifyBilling::ApplicationController
     include ShopifyApp::EnsureHasSession
-    before_action :handle_access_scopes
 
-    def handle_access_scopes
-      NotImplementedError 'handle_access_scopes must be implemented by the host application'
+    def current_shop
+      raise NotImplementedError, 'current_shop must be implemented by the host application'
     end
   end
 end

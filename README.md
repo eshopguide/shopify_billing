@@ -111,6 +111,7 @@ class CreateShopifyBillingTables < ActiveRecord::Migration[7.0]
       t.boolean "development_plan", default: false
       t.boolean "available_for_development_shop", default: false
       t.boolean "available_for_production_shop", default: true
+      t.string "interval"
       t.index ["short_name"], name: "index_billing_plans_on_short_name"
     end
 
@@ -210,6 +211,7 @@ ShopifyBilling::BillingPlan.create!(
   short_name: 'basic',
   price: 19.99,
   plan_type: 'recurring',
+  interval: 'ANNUAL' # Possible options: ANNUAL or EVERY_30_DAYS
   features: ['feature1', 'feature2'],
   recommended: true,
   available_for_development_shop: true,

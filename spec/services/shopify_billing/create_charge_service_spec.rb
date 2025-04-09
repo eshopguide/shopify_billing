@@ -11,8 +11,14 @@ RSpec.describe ShopifyBilling::CreateChargeService do
     double('ShopifyAPI::ApplicationCharge', id: 123, status: 'active', test: false, current_period_end: nil)
   end
   let(:recurring_charge) do
-    double('ShopifyAPI::RecurringApplicationCharge', id: 123, status: 'active', test: false,
-                                                     current_period_end: 1.month.from_now)
+    OpenStruct.new(
+      data: OpenStruct.new(
+        appSubscription: OpenStruct.new(
+          id: "gid://shopify/AppSubscription/123"
+        ),
+        confirmationUrl: 'https://some-host/confirm'
+      )
+    )
   end
   let(:service) do
     described_class.new(shop:, billing_plan_id: billing_plan.id, host:, coupon_code: coupon&.coupon_code)
@@ -44,6 +50,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
           },
           timestamp: current_time
         )
+        expect(CreateAppSubscription).to receive(:call).and_return(recurring_charge)
 
         service.call
       end
@@ -65,7 +72,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
       it 'does not create a charge' do
         expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
-        expect(ShopifyAPI::RecurringApplicationCharge).not_to receive(:new)
+        expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
     end
@@ -77,7 +84,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
       it 'does not create a charge' do
         expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
-        expect(ShopifyAPI::RecurringApplicationCharge).not_to receive(:new)
+        expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
     end
@@ -87,7 +94,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
       it 'does not create a charge' do
         expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
-        expect(ShopifyAPI::RecurringApplicationCharge).not_to receive(:new)
+        expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
     end
@@ -107,16 +114,17 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         it 'assigns the coupon to the shop and applies it to the billing plan' do
           expect(coupon).to receive(:assign_to_shop).with(shop)
           expect(billing_plan).to receive(:apply_coupon).with(coupon)
+          expect(CreateAppSubscription).to receive(:call).and_return(recurring_charge)
+
           service.call
         end
 
         it 'creates a recurring application charge' do
-          allow(ShopifyAPI::RecurringApplicationCharge)
-            .to receive(:new).with(from_hash: kind_of(Hash)).and_return(recurring_charge)
-          expect(recurring_charge).to receive(:save!)
+          allow(CreateAppSubscription)
+            .to receive(:call).with(variables: kind_of(Hash)).and_return(recurring_charge)
 
           expect { service.call }.to change(ShopifyBilling::Charge, :count).by(1)
-          expect(ShopifyBilling::Charge.last.shopify_id).to eq("gid://shopify/AppSubscription/#{recurring_charge.id}")
+          expect(ShopifyBilling::Charge.last.shopify_id).to eq(recurring_charge.data.appSubscription.id)
         end
       end
 
@@ -124,11 +132,50 @@ RSpec.describe ShopifyBilling::CreateChargeService do
         let(:coupon) { nil }
 
         it 'creates a recurring application charge' do
-          allow(ShopifyAPI::RecurringApplicationCharge)
-            .to receive(:new).with(from_hash: kind_of(Hash)).and_return(recurring_charge)
-          expect(recurring_charge).to receive(:save!)
+          allow(CreateAppSubscription)
+            .to receive(:call).with(variables: kind_of(Hash)).and_return(recurring_charge)
           expect(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
           expect(billing_plan).not_to receive(:apply_coupon)
+
+          service.call
+        end
+      end
+
+      context 'when billing plan is annual' do
+        let(:billing_plan) { create(:billing_plan, interval: 'ANNUAL') }
+
+        it 'creates a recurring application charge' do
+          expect(CreateAppSubscription).to receive(:call)
+            .with(variables: hash_including(lineItems: [
+              hash_including(
+                plan: hash_including(
+                  appRecurringPricingDetails: hash_including(
+                    interval: 'ANNUAL'
+                  )
+                )
+              )
+            ]))
+            .and_return(recurring_charge)
+
+          service.call
+        end
+      end
+
+      context 'when billing plan is monthly' do
+        let(:billing_plan) { create(:billing_plan, interval: 'EVERY_30_DAYS') }
+
+        it 'creates a recurring application charge' do
+          expect(CreateAppSubscription).to receive(:call)
+            .with(variables: hash_including(lineItems: [
+              hash_including(
+                plan: hash_including(
+                  appRecurringPricingDetails: hash_including(
+                    interval: 'EVERY_30_DAYS'
+                  )
+                )
+              )
+            ]))
+            .and_return(recurring_charge)
 
           service.call
         end

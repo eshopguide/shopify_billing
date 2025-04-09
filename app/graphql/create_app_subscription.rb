@@ -22,8 +22,6 @@ class CreateAppSubscription
     response = execute(QUERY, **variables)
     response.data = response.data.appSubscriptionCreate
 
-    puts response.data
-
     handle_user_errors(response.data)
     response
   end

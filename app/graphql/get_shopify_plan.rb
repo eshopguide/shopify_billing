@@ -8,7 +8,7 @@ class GetShopifyPlan
     query {
       shop {
         plan {
-          displayName
+          publicDisplayName
           partnerDevelopment
           shopifyPlus
         }

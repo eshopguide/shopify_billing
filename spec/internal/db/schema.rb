@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_17_111013) do
     t.boolean "available_for_development_shop", default: false
     t.boolean "available_for_production_shop", default: true
     t.string "interval"
+    t.boolean "is_legacy", default: false, null: false
     t.index ["short_name"], name: "index_billing_plans_on_short_name"
   end
 

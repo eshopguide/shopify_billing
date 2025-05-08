@@ -5,6 +5,8 @@ module ShopifyBilling
     self.table_name = 'billing_plans'
     has_many :shops
 
+    scope :non_legacy, -> { where(is_legacy: false) }
+
     def recurring?
       plan_type == 'recurring'
     end

@@ -8,7 +8,14 @@ RSpec.describe ShopifyBilling::CreateChargeService do
   let(:coupon) { create(:one_time_coupon_code, coupon_code: 'ABC123') }
   let(:host) { 'some-host' }
   let(:one_time_charge) do
-    double('ShopifyAPI::ApplicationCharge', id: 123, status: 'active', test: false, current_period_end: nil)
+    OpenStruct.new(
+      data: OpenStruct.new(
+        appPurchaseOneTime: OpenStruct.new(
+            id: "gid://shopify/AppPurchaseOneTime/123",
+        ),
+        confirmationUrl: 'https://some-host/confirm'
+      )
+    )
   end
   let(:recurring_charge) do
     OpenStruct.new(
@@ -57,11 +64,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
 
       it 'creates a charge' do
         allow(billing_plan).to receive_messages(recurring?: false, one_time?: true)
-
-        allow(ShopifyAPI::ApplicationCharge).to receive(:new)
-          .with(from_hash: kind_of(Hash))
-          .and_return(one_time_charge)
-        expect(one_time_charge).to receive(:save!)
+        allow(AppPurchaseOneTimeCreate).to receive(:call).and_return(one_time_charge)
 
         expect { service.call }.not_to raise_error
       end
@@ -71,7 +74,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
       let(:shop) { nil }
 
       it 'does not create a charge' do
-        expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
+        expect(AppPurchaseOneTimeCreate).not_to receive(:call)
         expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
@@ -83,7 +86,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
       end
 
       it 'does not create a charge' do
-        expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
+        expect(AppPurchaseOneTimeCreate).not_to receive(:call)
         expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
@@ -93,7 +96,7 @@ RSpec.describe ShopifyBilling::CreateChargeService do
       let(:host) { nil }
 
       it 'does not create a charge' do
-        expect(ShopifyAPI::ApplicationCharge).not_to receive(:new)
+        expect(AppPurchaseOneTimeCreate).not_to receive(:call)
         expect(CreateAppSubscription).not_to receive(:call)
         expect(service.call).to be_nil
       end
@@ -180,6 +183,40 @@ RSpec.describe ShopifyBilling::CreateChargeService do
           service.call
         end
       end
+
+      context 'when billing plan is in USD' do
+        let(:billing_plan) { create(:billing_plan, currency: 'USD') }
+
+        it 'creates a recurring application charge' do
+          expect(CreateAppSubscription).to receive(:call).with(variables: hash_including(lineItems: [
+            hash_including(
+              plan: hash_including(
+                appRecurringPricingDetails: hash_including(price: hash_including(currencyCode: 'USD'))
+              )
+            )
+          ]))
+          .and_return(recurring_charge)
+
+          service.call
+        end
+      end
+
+      context 'when billing plan is in EUR' do
+        let(:billing_plan) { create(:billing_plan, currency: 'EUR') }
+
+        it 'creates a recurring application charge' do
+          expect(CreateAppSubscription).to receive(:call).with(variables: hash_including(lineItems: [
+            hash_including(
+              plan: hash_including(
+                appRecurringPricingDetails: hash_including(price: hash_including(currencyCode: 'EUR'))
+              )
+            )
+          ]))
+          .and_return(recurring_charge)
+
+          service.call
+        end
+      end
     end
 
     context 'when billing plan is not recurring' do
@@ -188,16 +225,13 @@ RSpec.describe ShopifyBilling::CreateChargeService do
       end
 
       it 'creates a one-time application charge and does not apply coupon' do
-        allow(ShopifyAPI::ApplicationCharge).to receive(:new)
-          .with(from_hash: kind_of(Hash))
-          .and_return(one_time_charge)
-        expect(one_time_charge).to receive(:save!)
+        allow(AppPurchaseOneTimeCreate).to receive(:call).and_return(one_time_charge)
 
         expect(ShopifyBilling::OneTimeCouponCode).not_to receive(:assign_to_shop)
         expect(billing_plan).not_to receive(:apply_coupon)
 
         expect { service.call }.to change(ShopifyBilling::Charge, :count).by(1)
-        expect(ShopifyBilling::Charge.last.shopify_id).to eq("gid://shopify/AppPurchaseOneTime/#{one_time_charge.id}")
+        expect(ShopifyBilling::Charge.last.shopify_id).to eq(one_time_charge.data.appPurchaseOneTime.id)
       end
     end
   end

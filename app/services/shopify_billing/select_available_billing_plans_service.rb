@@ -68,7 +68,8 @@ module ShopifyBilling
         plan_type: billing_plan.plan_type,
         development_plan: billing_plan.development_plan?,
         available: billing_plan.plan_available?(@shop),
-        interval: billing_plan.interval
+        interval: billing_plan.interval,
+        currency: billing_plan.currency
       }
     end
 

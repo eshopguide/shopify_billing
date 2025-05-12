@@ -23,8 +23,8 @@ module ShopifyBilling
         subscription = CreateAppSubscription.call(variables: recurring_charge_attributes)
         charge = subscription.data
       else
-        charge = ShopifyAPI::ApplicationCharge.new(from_hash: charge_attributes)
-        charge.save!
+        one_time_charge = AppPurchaseOneTimeCreate.call(variables: charge_attributes)
+        charge = one_time_charge.data
       end
 
       # Log the plan click before creating the charge
@@ -34,7 +34,7 @@ module ShopifyBilling
       shopify_charge_id = if @billing_plan.recurring?
                             charge.appSubscription.id
                           else
-                            "gid://shopify/AppPurchaseOneTime/#{charge.id}"
+                            charge.appPurchaseOneTime.id
                           end
 
       ShopifyBilling::Charge.create!(
@@ -64,9 +64,11 @@ module ShopifyBilling
     def charge_attributes
       {
         name: @billing_plan.name,
-        price: @billing_plan.price_for_shop(@shop),
-        trial_days: @billing_plan.trial_days_for_shop(@shop),
-        return_url: return_url,
+        price: {
+          amount: @billing_plan.price_for_shop(@shop),
+          currencyCode: @billing_plan.currency
+        },
+        returnUrl: return_url,
         test:
       }
     end
@@ -83,7 +85,7 @@ module ShopifyBilling
               interval: @billing_plan.interval,
               price: {
                 amount: @billing_plan.price_for_shop(@shop),
-                currencyCode: 'USD'
+                currencyCode: @billing_plan.currency
               }
             }
           }

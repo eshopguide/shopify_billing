@@ -3,6 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe ShopifyBilling::BillingPlan do
+  describe 'scopes' do
+    describe '.non_legacy' do
+      let!(:legacy_plan) { create(:billing_plan, is_legacy: true) }
+      let!(:current_plan) { create(:billing_plan, is_legacy: false) }
+      let!(:another_current_plan) { create(:billing_plan, is_legacy: false) }
+
+      it 'returns only non-legacy plans' do
+        expect(described_class.non_legacy).to match_array([current_plan, another_current_plan])
+        expect(described_class.non_legacy).not_to include(legacy_plan)
+      end
+    end
+  end
+
   describe '#recurring?' do
     let(:recurring_plan) { create(:billing_plan, plan_type: 'recurring') }
     let(:one_time_plan) { create(:billing_plan, plan_type: 'one_time') }

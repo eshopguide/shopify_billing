@@ -92,14 +92,13 @@ module ShopifyBilling
         ]
       }
     end
-    
+
     def test
       ENV.fetch('TEST_CHARGE').to_s.casecmp('true').zero? ||
         @billing_plan.development_plan? ||
         @shop.internal_test_shop?
     end
 
-    # rubocop:disable Metrics/MethodLength
     def return_url
       params = {
         shop_id: @shop.id,
@@ -115,7 +114,6 @@ module ShopifyBilling
         query: params.to_query
       ).to_s
     end
-    # rubocop:enable Metrics/MethodLength
 
     def verification_token
       Digest::SHA1.hexdigest([@shop.id, @billing_plan.id].join('|'))

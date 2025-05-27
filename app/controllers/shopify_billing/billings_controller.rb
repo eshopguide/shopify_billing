@@ -40,8 +40,10 @@ module ShopifyBilling
         host: shopify_host
       )
 
-      if charge&.confirmation_url
-        render json: { success: true, confirmation_url: charge.confirmation_url }
+      confirmation_url = charge&.confirmation_url || charge&.confirmationUrl
+
+      if confirmation_url
+        render json: { success: true, confirmation_url: }
       else
         render json: { success: false }
       end

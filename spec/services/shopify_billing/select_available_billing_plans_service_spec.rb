@@ -13,7 +13,7 @@ RSpec.describe ShopifyBilling::SelectAvailableBillingPlansService do
 
     before do
       allow(ShopifyBilling::BillingPlan)
-        .to receive_message_chain(:where, :order)
+        .to receive_message_chain(:non_legacy, :where, :order)
         .and_return([current_plan, recurring_plan, one_time_plan])
       allow(shop).to receive_messages(development_shop?: false, billing_plan: current_plan)
       allow(current_plan).to receive(:current_for_shop?).with(shop).and_return(true)

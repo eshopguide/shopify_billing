@@ -14,7 +14,8 @@ FactoryBot.define do
     development_plan { false }
     available_for_development_shop { false }
     available_for_production_shop { true }
-    interval { ['EVERY_30_DAYS', 'ANNUAL'].sample }
+    interval { %w[EVERY_30_DAYS ANNUAL].sample }
+    currency { %w[USD EUR].sample }
     is_legacy { false }
 
     trait :with_default_id do

@@ -9,23 +9,37 @@ import {
   Text,
 } from "polaris-13";
 import PlanCard from "./PlanCard";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState, useEffect } from "react";
 import { PlansAndCouponsContext } from "../pages/Billing";
-import { useQuery } from "@tanstack/react-query";
 import { useBilling } from "../providers/BillingProvider";
 
 const AvailableBillingPlans = () => {
   const { fetch } = useBilling();
   const { activeCouponCode } = useContext(PlansAndCouponsContext);
-  const { data: plans, isLoading } = useQuery({
-    queryKey: ["plans", activeCouponCode],
-    queryFn: () =>
-      fetch(
-        `/shopify_billing/billing/plans?coupon_code=${activeCouponCode}`
-      ).then((res) => res.json()),
-  });
+  const [plans, setPlans] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { t } = useTranslation();
   const [interval, setInterval] = useState("ANNUAL");
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `/shopify_billing/billing/plans?coupon_code=${activeCouponCode}`
+        );
+        const json = await response.json();
+        setPlans(json);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, [fetch, activeCouponCode]);
 
   const activePlanDetails = useMemo(() => {
     if (!plans?.recurring) return { monthly: null, annual: null };

@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from "react-i18next";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import {
   Badge,
   BlockStack,
@@ -11,25 +11,46 @@ import {
   Box,
 } from "polaris-13";
 import { MagicIcon, DiscountIcon } from "polaris-icons-v9";
-import { useMutation } from "@tanstack/react-query";
 import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 
 export default function PlanCard({ plan }) {
   const { t } = useTranslation();
-  const { locale, showToast } = useBilling();
+  const { locale, showToast, fetch } = useBilling();
   const { activeCouponCode } = useContext(PlansAndCouponsContext);
+  const [isLoading, setIsLoading] = useState(false);
   const features = useMemo(() => {
     return t(`billing.plan.${plan.short_name}.features`).split(".");
   }, [plan.short_name, t]);
 
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (data) =>
-      fetch("/shopify_billing/billing/charge", {
+  const choosePlan = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/shopify_billing/billing/charge", {
         method: "POST",
-        body: JSON.stringify(data),
-      }).then((res) => res.json()),
-  });
+        body: JSON.stringify({
+          plan_id: plan.id,
+          coupon_code: activeCouponCode,
+        }),
+      });
+      const data = await response.json();
+
+      if (data.confirmation_url) {
+        window.top.location.href = data.confirmation_url;
+      } else {
+        showToast(t("billing.plan.notifications.failure"), {
+          isError: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      showToast(t("billing.plan.notifications.failure"), {
+        isError: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const formatPrice = (price, currency) => {
     return new Intl.NumberFormat(locale, {
@@ -38,30 +59,6 @@ export default function PlanCard({ plan }) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     }).format(parseFloat(price));
-  };
-
-  const onChoosePlanSuccess = ({ confirmation_url }) => {
-    if (!confirmation_url) return onChoosePlanError();
-    window.top.location.href = confirmation_url;
-  };
-
-  const onChoosePlanError = () => {
-    showToast(t("billing.plan.notifications.failure"), {
-      isError: true,
-    });
-  };
-
-  const choosePlan = () => {
-    mutate(
-      {
-        plan_id: plan.id,
-        coupon_code: activeCouponCode,
-      },
-      {
-        onSuccess: onChoosePlanSuccess,
-        onError: onChoosePlanError,
-      }
-    );
   };
 
   const isDisabled = useMemo(() => {

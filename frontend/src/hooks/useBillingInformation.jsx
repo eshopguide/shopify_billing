@@ -7,27 +7,22 @@ export const useBillingInformation = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(
-    () => {
-      const fetchData = async () => {
-        try {
-          setIsLoading(true);
-          const response = await fetch("/shopify_billing");
-          const json = await response.json();
-          setData(json);
-        } catch (err) {
-          setError(err);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/shopify_billing");
+        const json = await response.json();
+        setData(json);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      fetchData();
-    },
-    [
-      /*fetch*/
-    ]
-  );
+    fetchData();
+  }, []);
 
   return { data, isLoading, error };
 };

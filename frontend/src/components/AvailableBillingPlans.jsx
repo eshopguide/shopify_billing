@@ -18,7 +18,6 @@ const AvailableBillingPlans = () => {
   const { activeCouponCode } = useContext(PlansAndCouponsContext);
   const [plans, setPlans] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { t } = useTranslation();
   const [interval, setInterval] = useState("ANNUAL");
 
@@ -32,7 +31,7 @@ const AvailableBillingPlans = () => {
         const json = await response.json();
         setPlans(json);
       } catch (err) {
-        setError(err);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }

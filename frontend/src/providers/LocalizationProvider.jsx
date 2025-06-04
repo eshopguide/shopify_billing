@@ -29,7 +29,6 @@ export function LocalizationProvider({ children }) {
 
   useEffect(() => {
     if (locale) {
-      console.log("LOCALE CHANGED", locale);
       // TODO:
       i18next.changeLanguage(locale);
     }

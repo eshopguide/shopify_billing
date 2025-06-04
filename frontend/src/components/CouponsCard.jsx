@@ -7,15 +7,13 @@ import {
   InlineStack,
   Card,
 } from "polaris-13";
-import { useTranslation } from "react-i18next";
 import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 
 export default function CouponsCard() {
   const { setActiveCouponCode } = useContext(PlansAndCouponsContext);
-  const { t } = useTranslation();
   const [couponCode, setCouponCode] = useState("");
-  const { showToast, fetch } = useBilling();
+  const { showToast, fetch, t } = useBilling();
 
   const checkCoupon = async () => {
     const response = await fetch("/shopify_billing/billing/check_coupon", {

@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   BlockStack,
   Button,
@@ -14,11 +13,10 @@ import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 
 const AvailableBillingPlans = () => {
-  const { fetch } = useBilling();
+  const { fetch, t } = useBilling();
   const { activeCouponCode } = useContext(PlansAndCouponsContext);
   const [plans, setPlans] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { t } = useTranslation();
   const [interval, setInterval] = useState("ANNUAL");
 
   useEffect(() => {

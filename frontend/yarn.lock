@@ -133,7 +133,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/runtime@^7.25.0", "@babel/runtime@^7.27.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.27.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.4.tgz#a91ec580e6c00c67118127777c316dfd5a5a6abf"
   integrity sha512-t3yaEOuGu9NlIZ+hIeGbBjFtZT7j2cb2tg0fuaJKeGotchRjjLfrBA9Kwf8quhpP1EUuxModQg04q/mBwyg8uA==
@@ -993,20 +993,6 @@ has-flag@^4.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-html-parse-stringify@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz#dfc1017347ce9f77c8141a507f233040c59c55d2"
-  integrity sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==
-  dependencies:
-    void-elements "3.1.0"
-
-i18next@^25.2.1:
-  version "25.2.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.2.1.tgz#23cf8794904f551f577558d93c84b0fb6cd489a2"
-  integrity sha512-+UoXK5wh+VlE1Zy5p6MjcvctHXAhRwQKCxiJD8noKZzIXmnAX8gdHX5fLPA3MEVxEN4vbZkQFy8N0LyD9tUqPw==
-  dependencies:
-    "@babel/runtime" "^7.27.1"
-
 ignore@^5.2.0:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
@@ -1256,14 +1242,6 @@ react-fast-compare@^3.2.0:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
 
-react-i18next@^15.5.2:
-  version "15.5.2"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-15.5.2.tgz#2cfbd8e055efea077a7cbd7fbd9528c76d31925e"
-  integrity sha512-ePODyXgmZQAOYTbZXQn5rRsSBu3Gszo69jxW6aKmlSgxKAI1fOhDwSu6bT4EKHciWPKQ7v7lPrjeiadR6Gi+1A==
-  dependencies:
-    "@babel/runtime" "^7.25.0"
-    html-parse-stringify "^3.0.1"
-
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -1400,11 +1378,6 @@ vite@^6.3.5:
     tinyglobby "^0.2.13"
   optionalDependencies:
     fsevents "~2.3.3"
-
-void-elements@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
-  integrity sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==
 
 which@^2.0.1:
   version "2.0.2"

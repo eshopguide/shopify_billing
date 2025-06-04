@@ -4,9 +4,10 @@ import { useBillingInformation } from "../hooks/useBillingInformation";
 import LegacyPlanBanner from "../components/LegacyPlanBanner";
 import PlanMismatchBanner from "../components/PlanMismatchBanner";
 import { RemainingTrialDaysBanner } from "../components/RemainingTrialDaysBanner";
-import { Trans, useTranslation } from "react-i18next";
 import CouponsCard from "../components/CouponsCard";
 import AvailableBillingPlans from "../components/AvailableBillingPlans";
+import { useBilling } from "../providers/BillingProvider";
+import { Trans } from "react-i18next";
 
 export const PlansAndCouponsContext = createContext();
 
@@ -23,7 +24,7 @@ const PlansAndCouponsProvider = ({ children }) => {
 };
 
 export default function BillingPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useBilling();
   const { data: billingInfo, isLoading } = useBillingInformation();
 
   return (
@@ -60,6 +61,7 @@ export default function BillingPage() {
                 <BlockStack gap="50">
                   <Text alignment="center">
                     <Trans
+                      i18n={i18n}
                       i18nKey="billing.accept_terms"
                       components={{
                         a: (

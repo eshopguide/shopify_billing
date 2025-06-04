@@ -1,8 +1,8 @@
 import { Banner } from "polaris-13";
-import { useTranslation } from "react-i18next";
+import { useBilling } from "../providers/BillingProvider";
 
 export default function PlanMismatchBanner({ billingPlan }) {
-  const { t } = useTranslation();
+  const { t } = useBilling();
 
   return (
     <Banner title={t("billing.planMismatchBanner.title")} tone="warning">

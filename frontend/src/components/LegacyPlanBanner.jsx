@@ -1,8 +1,8 @@
 import { Banner } from "polaris-13";
-import { useTranslation } from "react-i18next";
+import { useBilling } from "../providers/BillingProvider";
 
 export default function LegacyPlanBanner({ billingPlan }) {
-  const { t } = useTranslation();
+  const { t } = useBilling();
 
   if (!billingPlan || !billingPlan.is_legacy) {
     return null;

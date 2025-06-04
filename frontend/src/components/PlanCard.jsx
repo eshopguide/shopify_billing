@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useContext, useMemo, useState } from "react";
 import {
   Badge,
@@ -15,8 +15,7 @@ import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 
 export default function PlanCard({ plan }) {
-  const { t } = useTranslation();
-  const { locale, showToast, fetch } = useBilling();
+  const { locale, showToast, fetch, t, i18n } = useBilling();
   const { activeCouponCode } = useContext(PlansAndCouponsContext);
   const [isLoading, setIsLoading] = useState(false);
   const features = useMemo(() => {
@@ -171,6 +170,7 @@ export default function PlanCard({ plan }) {
                       tone="success"
                     >
                       <Trans
+                        i18n={i18n}
                         i18nKey="billing.plan.trialDaysDiscounted"
                         values={{
                           trialDays: plan.trial_days,

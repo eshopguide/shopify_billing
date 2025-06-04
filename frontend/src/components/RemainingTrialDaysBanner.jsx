@@ -1,8 +1,8 @@
 import { Banner } from "polaris-13";
-import { useTranslation } from "react-i18next";
+import { useBilling } from "../providers/BillingProvider";
 
 export function RemainingTrialDaysBanner({ remainingTrialDays }) {
-  const { t } = useTranslation();
+  const { t } = useBilling();
 
   if (remainingTrialDays > 0) {
     return (

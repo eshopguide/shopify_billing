@@ -2,11 +2,9 @@ import { createContext, useContext } from "react";
 
 export const BillingContext = createContext();
 
-export function BillingProvider({ children, fetch, locale, showToast }) {
+export function BillingProvider({ children, ...props }) {
   return (
-    <BillingContext.Provider value={{ fetch, locale, showToast }}>
-      {children}
-    </BillingContext.Provider>
+    <BillingContext.Provider value={props}>{children}</BillingContext.Provider>
   );
 }
 

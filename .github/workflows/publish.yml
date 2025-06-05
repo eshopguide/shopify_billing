@@ -30,6 +30,10 @@ jobs:
         working-directory: ./frontend
         run: yarn install --frozen-lockfile
 
+      - name: Build
+        working-directory: ./frontend
+        run: yarn build
+
       - name: Publish to npm
         working-directory: ./frontend
         run: npm publish --dry-run

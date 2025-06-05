@@ -18,7 +18,7 @@ The Billing UI provides a user interface for managing billing operations in Shop
 
 ## Development
 
-The application uses Vite for development and building. The development server will watch for changes and rebuild automatically. To see the UI, include it in any Shopify app.
+The application uses Vite for development and building. The development server will watch for changes and rebuild automatically. To see the UI, include it in any Shopify app using [`yarn link`](https://classic.yarnpkg.com/lang/en/docs/cli/link/)
 
 ## Integration
 

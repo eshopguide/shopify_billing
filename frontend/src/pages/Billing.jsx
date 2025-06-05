@@ -24,7 +24,7 @@ const PlansAndCouponsProvider = ({ children }) => {
 };
 
 export default function BillingPage() {
-  const { t, i18n } = useBilling();
+  const { t, i18n, termsLink, avvLink, privacyLink } = useBilling();
   const { data: billingInfo, isLoading } = useBillingInformation();
 
   if (isLoading) {
@@ -62,15 +62,9 @@ export default function BillingPage() {
                 i18n={i18n}
                 i18nKey="billing.accept_terms"
                 components={{
-                  a: (
-                    <Link
-                      target="_blank"
-                      onClick={() => {
-                        window.Beacon("open");
-                        window.Beacon("article", "423");
-                      }}
-                    />
-                  ),
+                  a: <Link onClick={termsLink} />,
+                  a2: <Link onClick={avvLink} />,
+                  a3: <Link onClick={privacyLink} />,
                 }}
               />
             </Text>

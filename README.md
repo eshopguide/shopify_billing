@@ -307,6 +307,9 @@ Handles the callback from Shopify after a charge is accepted or declined.
 
 Returns available billing plans for a shop.
 
+## Frontend (Billing UI)
+s. [frontend/README.md](frontend/README.md)
+
 ## Contributing
 
 1. Fork the repository

@@ -2,6 +2,14 @@
 
 module ShopifyBilling
   class BillingsController < Object.const_get(ShopifyBilling.authenticated_controller)
+    def index
+      render json: {
+        billingPlan: current_shop.billing_plan,
+        planMismatchSince: current_shop.plan_mismatch_since,
+        remainingTrialDays: current_shop.remaining_trial_days,
+      }
+    end
+
     def show
       plans = ShopifyBilling::SelectAvailableBillingPlansService.call(
         shop: current_shop,

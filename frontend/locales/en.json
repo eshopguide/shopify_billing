@@ -1,0 +1,106 @@
+{
+  "billing": {
+    "page_title": "Billing and plans",
+    "overview": {
+      "title": "Manage your billing plans",
+      "description": "Automatically transfer invoices, credit notes and transactions to your Lexware Office account. Activate your plan now and save yourself the enormous amount of time!",
+      "status": {
+        "inactive": "The app is currently inactive.",
+        "trial_period_hint": "Activate your app plan to start the free trial period. If you uninstall before the end of the 14-day trial period, you will not be charged."
+      }
+    },
+    "setup_warning": {
+      "no_recurring_plan": {
+        "title": "Activation of the Import Plan requires the Autosync Plan",
+        "description": "To enable the import, please activate the Autosync plan, which is essential for the creation of the documents."
+      }
+    },
+    "plans_and_coupons": "Plans and Coupons",
+    "available_plans": "Available Plans",
+    "import_plan_not_available": "*The import is only available with an active Standard or Premium plan",
+    "plan": {
+      "features": "Features",
+      "active": "Plan active",
+      "activate_plan": "Activate plan",
+      "buttonText": {
+        "current": "Current Plan",
+        "choosePlan": "Choose Plan",
+        "choosePlanWithTrialDays": "Try {{trialDays}} days for free",
+        "oneTimePayment": "Choose Plan"
+      },
+      "recommended": "Recommended",
+      "month": "Month",
+      "trialDays": "{{trialDays}} days free trial",
+      "trialDaysDiscounted": "{{trialDays}} days free trial (instead of {{baseTrialDays}})",
+      "recurring": {
+        "heading": "Subscription",
+        "frequency": "per month"
+      },
+      "one_time": {
+        "unlimited_use": "Pay once, unlimited use!",
+        "heading": "One-time payment",
+        "frequency": "once"
+      },
+      "pricePerYear": "{{amount}} per year",
+      "notifications": {
+        "success": "Plan activated successfully.",
+        "failure": "An error occurred while activating the plan. Please try again later.",
+        "import_success": "Import activated successfully."
+      },
+      "discount": "-{{discount}}% Discount",
+      "developer": {
+        "features": "Automatic transfer of orders and credit notes.Send invoice emails to customers.Payment transactions.Payment assignment proposals"
+      },
+      "standard": {
+        "features": "Automatic transfer of orders and credit notes.Send invoice emails to customers.Payment transactions.Payment assignment proposals"
+      },
+      "premium": {
+        "features": "Includes all Basic Plan functions.Multiple invoice layouts to choose from.Tags for invoice exclusion.Tags for e-mail exclusion.Transfer excluded orders"
+      },
+      "developer_annual": {
+        "features": "Automatic transfer of orders and credit notes.Send invoice emails to customers.Payment transactions.Payment assignment proposals"
+      },
+      "standard_annual": {
+        "features": "Automatic transfer of orders and credit notes.Send invoice emails to customers.Payment transactions.Payment assignment proposals"
+      },
+      "premium_annual": {
+        "features": "Includes all Basic Plan functions.Multiple invoice layouts to choose from.Tags for invoice exclusion.Tags for e-mail exclusion.Transfer excluded orders"
+      },
+      "import": {
+        "features": "Subsequent order import of invoices, credit notes and payments. Select period. Start import. Lean back"
+      }
+    },
+    "coupon": {
+      "title": "Coupon code",
+      "description": "Enter the coupon code in the field provided to display the extended trial period. You must then reactivate the plan for the new trial period to become valid.",
+      "button": "Use code",
+      "placeholder": "Coupon code",
+      "notifications": {
+        "failure": "Invalid Code, please try again or refer to the support",
+        "success": "The coupon code has been successfully redeemed."
+      },
+      "success": "Coupon applied successfully",
+      "error": "Invalid coupon code"
+    },
+    "remainingTrialDays": "Your free trial period still has {{days}} days remaining.",
+    "planMismatchBanner": {
+      "title": "Action required",
+      "text": "Your current plan \"{{currentBillingPlanName}}\" is no longer available for your shop. Please select a new plan below."
+    },
+    "legacyPlanBanner": {
+      "title": "New plans available",
+      "text": "Your current plan \"{{planName}}\" is outdated. Please select a new plan to use all future features."
+    },
+    "intervals": {
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "extra_plan_info": {
+      "monthly_plus_plan": "*The monthly Plus-Plan is currently active.",
+      "monthly_basic_plan": "*The monthly Basic-Plan is currently active.",
+      "annual_plus_plan": "*The annual Plus-Plan is currently active.",
+      "annual_basic_plan": "*The annual Basic-Plan is currently active."
+    },
+    "accept_terms": "By activating one of the above plans, you agree to our <a>General Terms and Conditions</a>, the <a2>Data Processing Agreement</a2> and the <a3>Privacy Policy</a3>."
+  }
+}

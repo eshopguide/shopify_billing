@@ -3,7 +3,7 @@ name: Publish @eshopguide/shopify-billing to npm
 on:
   push:
     tags:
-      - "v*" # Triggers on version tags like v1.2.3
+      - "v*" # Only triggers on version tags like v1.2.3
 
 jobs:
   publish:
@@ -20,17 +20,18 @@ jobs:
           registry-url: "https://registry.npmjs.org/"
 
       - name: Extract version from tag
-        id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-      - name: Set package.json version
-        run: |
-          yarn version --new-version "$VERSION" --no-git-tag-version
+      - name: Set version in package.json (Yarn)
+        working-directory: ./frontend
+        run: yarn version --new-version "$VERSION" --no-git-tag-version
 
-      - name: Install dependencies with Yarn
+      - name: Install dependencies
+        working-directory: ./frontend
         run: yarn install --frozen-lockfile
 
       - name: Publish to npm
-        run: npm publish
+        working-directory: ./frontend
+        run: npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

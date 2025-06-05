@@ -1,7 +1,6 @@
 {
-  "name": "shopify-billing",
-  "private": true,
-  "version": "1.2.0",
+  "name": "@eshopguide/shopify-billing",
+  "version": "1.0.0",
   "main": "dist/shopify-billing.umd.js",
   "module": "dist/shopify-billing.es.js",
   "exports": {
@@ -11,8 +10,7 @@
     }
   },
   "files": [
-    "es",
-    "umd"
+    "dist"
   ],
   "scripts": {
     "dev": "vite build --watch",

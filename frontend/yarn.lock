@@ -663,6 +663,24 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
+"billing-polaris-icons@npm:@shopify/polaris-icons@^9.3.1":
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/@shopify/polaris-icons/-/polaris-icons-9.3.1.tgz#945aff6632c70a8086ca62d99c2e68257ea59e5a"
+  integrity sha512-16BIFAT93LJ8X4YRXz5cR9ZPHeErMg3DYS0gyTPNPkd0E5IBPoTxPINjn2b4Mr9Sc1x4RfI4AqPcV8ut0D1J5w==
+
+"billing-polaris@npm:@shopify/polaris@^13.0":
+  version "13.9.5"
+  resolved "https://registry.yarnpkg.com/@shopify/polaris/-/polaris-13.9.5.tgz#ed5d2985aa9488e1babb152dd504c8c5419b2154"
+  integrity sha512-UN+rT2q1r/uF0Xia8MaCl2nDxatuzbjunS5WYcv4qw8VBvThTxDVURgpwOuvutSrvu138pwScOAah933vqlYkg==
+  dependencies:
+    "@shopify/polaris-icons" "^9.3.1"
+    "@shopify/polaris-tokens" "^9.4.2"
+    "@types/react" "^18.2.0"
+    "@types/react-dom" "^18.2.0"
+    "@types/react-transition-group" "^4.4.2"
+    react-fast-compare "^3.2.0"
+    react-transition-group "^4.4.2"
+
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
@@ -1190,24 +1208,6 @@ picomatch@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.2.tgz#77c742931e8f3b8820946c76cd0c1f13730d1dab"
   integrity sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==
-
-"polaris-13@npm:@shopify/polaris@^13.0":
-  version "13.9.5"
-  resolved "https://registry.yarnpkg.com/@shopify/polaris/-/polaris-13.9.5.tgz#ed5d2985aa9488e1babb152dd504c8c5419b2154"
-  integrity sha512-UN+rT2q1r/uF0Xia8MaCl2nDxatuzbjunS5WYcv4qw8VBvThTxDVURgpwOuvutSrvu138pwScOAah933vqlYkg==
-  dependencies:
-    "@shopify/polaris-icons" "^9.3.1"
-    "@shopify/polaris-tokens" "^9.4.2"
-    "@types/react" "^18.2.0"
-    "@types/react-dom" "^18.2.0"
-    "@types/react-transition-group" "^4.4.2"
-    react-fast-compare "^3.2.0"
-    react-transition-group "^4.4.2"
-
-"polaris-icons-v9@npm:@shopify/polaris-icons@^9.3.1":
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/@shopify/polaris-icons/-/polaris-icons-9.3.1.tgz#945aff6632c70a8086ca62d99c2e68257ea59e5a"
-  integrity sha512-16BIFAT93LJ8X4YRXz5cR9ZPHeErMg3DYS0gyTPNPkd0E5IBPoTxPINjn2b4Mr9Sc1x4RfI4AqPcV8ut0D1J5w==
 
 postcss@^8.5.3:
   version "8.5.4"

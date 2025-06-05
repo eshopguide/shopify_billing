@@ -1,6 +1,6 @@
-import { AppProvider } from "polaris-13";
+import { AppProvider } from "billing-polaris";
 import ReactShadowRoot from "react-shadow-root";
-import styles from "polaris-13/build/esm/styles.css?raw";
+import styles from "billing-polaris/build/esm/styles.css?raw";
 
 import BillingPage from "./pages/Billing";
 import { BillingProvider } from "./providers/BillingProvider";

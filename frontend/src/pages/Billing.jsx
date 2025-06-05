@@ -1,4 +1,4 @@
-import { BlockStack, Frame, Link, Loading, Page, Text } from "polaris-13";
+import { BlockStack, Frame, Link, Loading, Page, Text } from "billing-polaris";
 import { createContext, useState } from "react";
 import { useBillingInformation } from "../hooks/useBillingInformation";
 import LegacyPlanBanner from "../components/LegacyPlanBanner";

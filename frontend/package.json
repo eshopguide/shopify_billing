@@ -17,8 +17,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "polaris-13": "npm:@shopify/polaris@^13.0",
-    "polaris-icons-v9": "npm:@shopify/polaris-icons@^9.3.1",
+    "billing-polaris": "npm:@shopify/polaris@^13.0",
+    "billing-polaris-icons": "npm:@shopify/polaris-icons@^9.3.1",
     "react-shadow-root": "^6.2.0"
   },
   "peerDependencies": {

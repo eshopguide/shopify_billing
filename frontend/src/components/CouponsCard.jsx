@@ -6,7 +6,7 @@ import {
   TextField,
   InlineStack,
   Card,
-} from "polaris-13";
+} from "billing-polaris";
 import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 

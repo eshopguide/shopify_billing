@@ -6,7 +6,7 @@ import {
   InlineGrid,
   SkeletonBodyText,
   Text,
-} from "polaris-13";
+} from "billing-polaris";
 import PlanCard from "./PlanCard";
 import { useContext, useMemo, useState, useEffect } from "react";
 import { PlansAndCouponsContext } from "../pages/Billing";

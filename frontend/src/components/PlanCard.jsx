@@ -9,8 +9,8 @@ import {
   InlineStack,
   Text,
   Box,
-} from "polaris-13";
-import { MagicIcon, DiscountIcon } from "polaris-icons-v9";
+} from "billing-polaris";
+import { MagicIcon, DiscountIcon, CheckIcon } from "billing-polaris-icons";
 import { PlansAndCouponsContext } from "../pages/Billing";
 import { useBilling } from "../providers/BillingProvider";
 
@@ -229,19 +229,3 @@ export default function PlanCard({ plan }) {
     </Card>
   );
 }
-
-// TODO: Use icon from @shopify/polaris-icons after upgrade
-const CheckIcon = () => {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      className="Icon_Icon__uZZKy"
-      style={{ width: "20px", height: "20px" }}
-    >
-      <path
-        fillRule="evenodd"
-        d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"
-      ></path>
-    </svg>
-  );
-};

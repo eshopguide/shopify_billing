@@ -1,4 +1,4 @@
-import { Banner } from "polaris-13";
+import { Banner } from "billing-polaris";
 import { useBilling } from "../providers/BillingProvider";
 
 export default function PlanMismatchBanner({ billingPlan }) {

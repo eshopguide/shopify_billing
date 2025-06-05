@@ -27,67 +27,62 @@ export default function BillingPage() {
   const { t, i18n } = useBilling();
   const { data: billingInfo, isLoading } = useBillingInformation();
 
+  if (isLoading) {
+    return (
+      <Frame>
+        <Loading />
+      </Frame>
+    );
+  }
+
   return (
-    <Frame>
-      {isLoading && <Loading />}
-      {!isLoading && !!billingInfo && (
-        <Page
-          title={t("billing.plans_and_coupons")}
-          backAction={{
-            content: "Back",
-            onAction: () => window.history.back(),
-          }}
-        >
-          <BlockStack gap="800">
-            <PlansAndCouponsProvider>
-              <BlockStack gap="0">
-                <LegacyPlanBanner billingPlan={billingInfo?.billingPlan} />
+    <BlockStack gap="800">
+      <PlansAndCouponsProvider>
+        <BlockStack gap="0">
+          <LegacyPlanBanner billingPlan={billingInfo?.billingPlan} />
 
-                {billingInfo.planMismatchSince && (
-                  <PlanMismatchBanner billingPlan={billingInfo?.billingPlan} />
-                )}
+          {billingInfo.planMismatchSince && (
+            <PlanMismatchBanner billingPlan={billingInfo?.billingPlan} />
+          )}
 
-                {billingInfo?.remainingTrialDays > 0 && (
-                  <RemainingTrialDaysBanner
-                    remainingTrialDays={billingInfo?.remainingTrialDays}
-                  />
-                )}
-              </BlockStack>
-              <BlockStack gap="400">
-                <Text variant="headingLg" alignment="center">
-                  {t("billing.available_plans")}
-                </Text>
-                <AvailableBillingPlans />
-                <BlockStack gap="50">
-                  <Text alignment="center">
-                    <Trans
-                      i18n={i18n}
-                      i18nKey="billing.accept_terms"
-                      components={{
-                        a: (
-                          <Link
-                            target="_blank"
-                            onClick={() => {
-                              window.Beacon("open");
-                              window.Beacon("article", "423");
-                            }}
-                          />
-                        ),
+          {billingInfo?.remainingTrialDays > 0 && (
+            <RemainingTrialDaysBanner
+              remainingTrialDays={billingInfo?.remainingTrialDays}
+            />
+          )}
+        </BlockStack>
+        <BlockStack gap="400">
+          <Text variant="headingLg" alignment="center">
+            {t("billing.available_plans")}
+          </Text>
+          <AvailableBillingPlans />
+          <BlockStack gap="50">
+            <Text alignment="center">
+              <Trans
+                i18n={i18n}
+                i18nKey="billing.accept_terms"
+                components={{
+                  a: (
+                    <Link
+                      target="_blank"
+                      onClick={() => {
+                        window.Beacon("open");
+                        window.Beacon("article", "423");
                       }}
                     />
-                  </Text>
-                  {!billingInfo?.billingPlan && (
-                    <Text alignment="center">
-                      {t("billing.import_plan_not_available")}
-                    </Text>
-                  )}
-                </BlockStack>
-                <CouponsCard />
-              </BlockStack>
-            </PlansAndCouponsProvider>
+                  ),
+                }}
+              />
+            </Text>
+            {!billingInfo?.billingPlan && (
+              <Text alignment="center">
+                {t("billing.import_plan_not_available")}
+              </Text>
+            )}
           </BlockStack>
-        </Page>
-      )}
-    </Frame>
+          <CouponsCard />
+        </BlockStack>
+      </PlansAndCouponsProvider>
+    </BlockStack>
   );
 }

@@ -1,0 +1,108 @@
+{
+  "billing": {
+    "page_title": "Bezahlung und Pläne",
+    "overview": {
+      "title": "Plan verwalten",
+      "description": "Übertrage Rechnungen, Gutschriften und Transaktionen automatisiert an Deinen Lexware Office Account. Aktivere jetzt Deinen Plan und spare Dir den enormen Zeitaufwand!",
+      "status": {
+        "inactive": "Die App ist noch nicht aktiviert",
+        "trial_period_hint": "Aktiviere Deinen App-Plan, um die kostenlose Testphase zu starten. Deinstallierst Du vor Ablauf der 14-tägigen Testphase, fallen keine Kosten für Dich an."
+      }
+    },
+    "setup_warning": {
+      "no_recurring_plan": {
+        "title": "Aktivierung des Import Plans benötigt den Autosync Plan",
+        "description": "Um den Import freischalten zu können, aktiviere bitte den Autosync Plan, welcher maßgeblich für die Erstellung der Belege benötigt wird."
+      }
+    },
+    "plans_and_coupons": "Pläne und Gutscheine",
+    "available_plans": "Verfügbare Pläne",
+    "import_plan_not_available": "*Der Import ist nur mit einem aktiven Standard- oder Premium-Plan verfügbar",
+    "plan": {
+      "features": "Was ist inbegriffen?",
+      "active": "Plan aktiv",
+      "activate_plan": "Plan aktivieren",
+      "buttonText": {
+        "current": "Aktueller Plan",
+        "choosePlan": "Plan auswählen",
+        "choosePlanWithTrialDays": "{{trialDays}} Tage kostenlos testen",
+        "oneTimePayment": "Plan auswählen"
+      },
+      "recommended": "Empfohlen",
+      "month": "Monat",
+      "trialDays": "{{trialDays}} Tage kostenlos testen",
+      "trialDaysDiscounted": "{{trialDays}} Tage kostenlos testen (statt {{baseTrialDays}})",
+      "recurring": {
+        "heading": "Abonnement",
+        "frequency": "pro Monat"
+      },
+      "one_time": {
+        "unlimited_use": "Einmal zahlen, unbegrenzt nutzen!",
+        "heading": "Einmalzahlung",
+        "frequency": "einmalig"
+      },
+      "pricePerYear": "{{amount}} pro Jahr",
+      "notifications": {
+        "success": "Plan erfolgreich aktiviert",
+        "import_success": "Import Plan erfolgreich aktiviert",
+        "failure": "Bei der Aktivierung des Plans ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+        "declined": "Hoppla, Du hast die Zahlung abgelehnt. Bitte versuche es erneut oder wende Dich an unseren Support.",
+        "no_charge": "Beim Bezahlvorgang ist ein Fehler aufgetreten. Bitte versuche es erneut oder wende Dich an unseren Support."
+      },
+      "discount": "-{{discount}}% Rabatt",
+      "developer": {
+        "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
+      },
+      "standard": {
+        "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
+      },
+      "premium": {
+        "features": "Enthält alle Basic-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
+      },
+      "developer_annual": {
+        "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
+      },
+      "standard_annual": {
+        "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
+      },
+      "premium_annual": {
+        "features": "Enthält alle Basic-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
+      },
+      "import": {
+        "features": "Nachträglicher Auftragsimport von Rechnungen, Gutschriften und Zahlungen. Zeitraum auswählen. Import starten. Zurücklehnen"
+      }
+    },
+    "coupon": {
+      "title": "Gutscheincode",
+      "description": "Trage den Gutscheincode in das dafür vorgesehene Feld ein, um die verlängerte Testphase anzuzeigen. Danach musst du den Plan erneut aktivieren, damit die neue Testphase gültig wird.",
+      "button": "Gutschein einlösen",
+      "placeholder": "Gutscheincode",
+      "notifications": {
+        "failure": "Code Ungültig, bitte versuche es erneut oder wende Dich an unseren Support.",
+        "success": "Gutschein erfolgreich eingelöst"
+      },
+      "success": "Coupon erfolgreich angewendet",
+      "error": "Ungültiger Coupon-Code"
+    },
+    "remainingTrialDays": "Deine kostenlose Testphase läuft noch {{days}} Tage.",
+    "planMismatchBanner": {
+      "title": "Aktion erforderlich",
+      "text": "Dein aktueller Plan \"{{currentBillingPlanName}}\" steht für deinen Shop nicht mehr zur Verfügung. Bitte wähle unten einen neuen Plan aus."
+    },
+    "legacyPlanBanner": {
+      "title": "Neue Pläne verfügbar",
+      "text": "Dein aktueller Plan \"{{planName}}\" ist veraltet. Bitte wähle einen neuen Plan, um alle zukünftigen Funktionen nutzen zu können."
+    },
+    "intervals": {
+      "monthly": "Monatlich",
+      "yearly": "Jährlich"
+    },
+    "extra_plan_info": {
+      "monthly_plus_plan": "*Der monatliche Plus-Plan ist aktuell aktiv.",
+      "monthly_basic_plan": "*Der monatliche Basic-Plan ist aktuell aktiv.",
+      "annual_plus_plan": "*Der jährliche Plus-Plan ist aktuell aktiv.",
+      "annual_basic_plan": "*Der jährliche Basic-Plan ist aktuell aktiv."
+    },
+    "accept_terms": "Durch das Aktivieren eines der oben genannten Pläne stimmst du unseren <a>Allgemeinen Geschäftsbedingungen (AGB)</a>, der <a2>Auftragsverarbeitungsvereinbarung (AVV)</a2> und den <a3>Datenschutzinformationen</a3> zu."
+  }
+}

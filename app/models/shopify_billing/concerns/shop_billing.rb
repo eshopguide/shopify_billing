@@ -55,6 +55,10 @@ module ShopifyBilling
         raise NotImplementedError, 'after_activate_one_time_purchase must be implemented by the host application'
       end
 
+      def send_plan_mismatch_notification
+        raise NotImplementedError, 'send_plan_mismatch_notification must be implemented by the host application'
+      end
+
       private
 
       def app_installation_cache_key

@@ -14,3 +14,18 @@
 
 - Billing Logik aus der App entfernen
 - Einrichtung des `shopify_billing` Gems s. [README.md](/README.md)
+
+### Funktionen implementieren
+- `Shop`
+-- `after_activate_one_time_purchase()`: Wird ausgeführt, nachdem eine OneTime Charge aktiviert wurde
+-- `send_plan_mismatch_notification()`: Wird ausgeführt, wenn ein Plan Mismatch besteht. Soll eine Benachrichtigung an den Shop-Owner schicken, dass ein neuer Plan abgeschlossen werden muss.
+
+- `ApplicationController`
+-- `shopify_host()`: Liefert den Shopify Host
+-- `redirect_to_admin()`: Leitet zur Admin UI weiter
+
+- `AuthenticatedController`
+-- `current_shop()`: Liefert den aktuellen Shop
+
+### Webhooks registrieren
+- shop/update Webhook --> `ShopifyBilling::CheckPlanMismatchService.call(shop:)`

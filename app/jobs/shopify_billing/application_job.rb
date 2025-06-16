@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
 module ShopifyBilling
-  VERSION = '1.3.0'
+  class ApplicationJob < ActiveJob::Base
+  end
 end

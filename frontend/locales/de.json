@@ -103,6 +103,11 @@
       "annual_plus_plan": "*Der jährliche Plus-Plan ist aktuell aktiv.",
       "annual_basic_plan": "*Der jährliche Basic-Plan ist aktuell aktiv."
     },
-    "accept_terms": "Durch das Aktivieren eines der oben genannten Pläne stimmst du unseren <a>Allgemeinen Geschäftsbedingungen (AGB)</a>, der <a2>Auftragsverarbeitungsvereinbarung (AVV)</a2> und den <a3>Datenschutzinformationen</a3> zu."
+    "accept_terms": "Durch das Aktivieren eines der oben genannten Pläne stimmst du unseren <a>Allgemeinen Geschäftsbedingungen (AGB)</a>, der <a2>Auftragsverarbeitungsvereinbarung (AVV)</a2> und den <a3>Datenschutzinformationen</a3> zu.",
+    "paywall": {
+      "title": "Premium Feature",
+      "text": "Für dieses Feature benötigst du den Premium-Plan.",
+      "buttonLabel": "Jetzt Premium-Plan freischalten"
+    }
   }
 }

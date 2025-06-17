@@ -8,6 +8,7 @@ import CouponsCard from "../components/CouponsCard";
 import AvailableBillingPlans from "../components/AvailableBillingPlans";
 import { useBilling } from "../providers/BillingProvider";
 import { Trans } from "react-i18next";
+import PolarisWrapper from "../components/PolarisWrapper";
 
 export const PlansAndCouponsContext = createContext();
 
@@ -29,54 +30,58 @@ export default function BillingPage() {
 
   if (isLoading) {
     return (
-      <Frame>
-        <Loading />
-      </Frame>
+      <PolarisWrapper>
+        <Frame>
+          <Loading />
+        </Frame>
+      </PolarisWrapper>
     );
   }
 
   return (
-    <BlockStack gap="800">
-      <PlansAndCouponsProvider>
-        <BlockStack gap="0">
-          <LegacyPlanBanner billingPlan={billingInfo?.billingPlan} />
+    <PolarisWrapper>
+      <BlockStack gap="800">
+        <PlansAndCouponsProvider>
+          <BlockStack gap="0">
+            <LegacyPlanBanner billingPlan={billingInfo?.billingPlan} />
 
-          {billingInfo.planMismatchSince && (
-            <PlanMismatchBanner billingPlan={billingInfo?.billingPlan} />
-          )}
+            {billingInfo.planMismatchSince && (
+              <PlanMismatchBanner billingPlan={billingInfo?.billingPlan} />
+            )}
 
-          {billingInfo?.remainingTrialDays > 0 && (
-            <RemainingTrialDaysBanner
-              remainingTrialDays={billingInfo?.remainingTrialDays}
-            />
-          )}
-        </BlockStack>
-        <BlockStack gap="400">
-          <Text variant="headingLg" alignment="center">
-            {t("billing.available_plans")}
-          </Text>
-          <AvailableBillingPlans />
-          <BlockStack gap="50">
-            <Text alignment="center">
-              <Trans
-                i18n={i18n}
-                i18nKey="billing.accept_terms"
-                components={{
-                  a: <Link onClick={termsLink} />,
-                  a2: <Link onClick={avvLink} />,
-                  a3: <Link onClick={privacyLink} />,
-                }}
+            {billingInfo?.remainingTrialDays > 0 && (
+              <RemainingTrialDaysBanner
+                remainingTrialDays={billingInfo?.remainingTrialDays}
               />
-            </Text>
-            {!billingInfo?.billingPlan && (
-              <Text alignment="center">
-                {t("billing.import_plan_not_available")}
-              </Text>
             )}
           </BlockStack>
-          <CouponsCard />
-        </BlockStack>
-      </PlansAndCouponsProvider>
-    </BlockStack>
+          <BlockStack gap="400">
+            <Text variant="headingLg" alignment="center">
+              {t("billing.available_plans")}
+            </Text>
+            <AvailableBillingPlans />
+            <BlockStack gap="50">
+              <Text alignment="center">
+                <Trans
+                  i18n={i18n}
+                  i18nKey="billing.accept_terms"
+                  components={{
+                    a: <Link onClick={termsLink} />,
+                    a2: <Link onClick={avvLink} />,
+                    a3: <Link onClick={privacyLink} />,
+                  }}
+                />
+              </Text>
+              {!billingInfo?.billingPlan && (
+                <Text alignment="center">
+                  {t("billing.import_plan_not_available")}
+                </Text>
+              )}
+            </BlockStack>
+            <CouponsCard />
+          </BlockStack>
+        </PlansAndCouponsProvider>
+      </BlockStack>
+    </PolarisWrapper>
   );
 }

@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 export const BillingContext = createContext();
 
-export function BillingProvider({ children, ...props }) {
+export default function BillingProvider({ children, ...props }) {
   return (
     <BillingContext.Provider value={props}>{children}</BillingContext.Provider>
   );

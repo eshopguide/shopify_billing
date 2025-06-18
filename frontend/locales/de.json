@@ -57,7 +57,7 @@
         "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
       },
       "premium": {
-        "features": "Enthält alle Basic-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
+        "features": "Enthält alle Standard-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
       },
       "developer_annual": {
         "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
@@ -66,7 +66,7 @@
         "features": "Automatische Übertragung von Belegen.Mailversand an Kunden.Zahlungstransaktionen.Zahlungszuordnungsvorschläge"
       },
       "premium_annual": {
-        "features": "Enthält alle Basic-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
+        "features": "Enthält alle Standard-Plan Funktionen.Mehrere Rechnungslayouts wählbar.Tags für Rechnungsausschluss.Tags für E-Mail-Ausschluss.Ausgeschlossene Bestellungen übertragen"
       },
       "import": {
         "features": "Nachträglicher Auftragsimport von Rechnungen, Gutschriften und Zahlungen. Zeitraum auswählen. Import starten. Zurücklehnen"
@@ -98,10 +98,10 @@
       "yearly": "Jährlich"
     },
     "extra_plan_info": {
-      "monthly_plus_plan": "*Der monatliche Plus-Plan ist aktuell aktiv.",
-      "monthly_basic_plan": "*Der monatliche Basic-Plan ist aktuell aktiv.",
-      "annual_plus_plan": "*Der jährliche Plus-Plan ist aktuell aktiv.",
-      "annual_basic_plan": "*Der jährliche Basic-Plan ist aktuell aktiv."
+      "monthly_plus_plan": "*Der monatliche Premium-Plan ist aktuell aktiv.",
+      "monthly_basic_plan": "*Der monatliche Standard-Plan ist aktuell aktiv.",
+      "annual_plus_plan": "*Der jährliche Premium-Plan ist aktuell aktiv.",
+      "annual_basic_plan": "*Der jährliche Standard-Plan ist aktuell aktiv."
     },
     "accept_terms": "Durch das Aktivieren eines der oben genannten Pläne stimmst du unseren <a>Allgemeinen Geschäftsbedingungen (AGB)</a>, der <a2>Auftragsverarbeitungsvereinbarung (AVV)</a2> und den <a3>Datenschutzinformationen</a3> zu.",
     "paywall": {

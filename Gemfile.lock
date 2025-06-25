@@ -10,7 +10,7 @@ GIT
 PATH
   remote: .
   specs:
-    shopify_billing (1.4.2)
+    shopify_billing (1.4.3)
       rails (~> 7.0)
       shopify_api (~> 14.4)
       shopify_app (>= 22.3)
